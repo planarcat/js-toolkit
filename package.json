@@ -1,0 +1,70 @@
+{
+  "name": "@planarcat/js-toolkit",
+  "version": "1.0.0",
+  "description": "一个自用的带学习性质的（目前）现代化的 JavaScript/TypeScript 实用工具库，提供类型安全、高性能的常用函数，包括对象转换、日期处理、函数优化等开发常用工具。",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "test": "jest",
+    "test:date": "jest --testPathPattern=formatDate",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "test:debug": "jest --no-coverage --watch --runInBand --verbose"
+  },
+  "keywords": [
+    "javascript",
+    "typescript",
+    "utility",
+    "toolkit",
+    "utils",
+    "helpers",
+    "conversion",
+    "date-formatting",
+    "debounce",
+    "throttle",
+    "object-conversion",
+    "functional",
+    "type-safe",
+    "nodejs",
+    "browser",
+    "es6",
+    "modern-javascript"
+  ],
+  "author": "planarcat",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/planarcat/js-toolkit.git"
+  },
+  "bugs": {
+    "url": "https://github.com/planarcat/js-toolkit/issues"
+  },
+  "homepage": "https://github.com/planarcat/js-toolkit#readme",
+  "devDependencies": {
+    "@types/jest": "^30.0.0",
+    "@types/node": "^25.0.7",
+    "@typescript-eslint/eslint-plugin": "^8.53.0",
+    "@typescript-eslint/parser": "^8.53.0",
+    "eslint": "^9.39.2",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.4",
+    "husky": "^9.1.7",
+    "jest": "^30.2.0",
+    "lint-staged": "^16.2.7",
+    "prettier": "^3.7.4",
+    "ts-jest": "^29.4.6",
+    "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.9.3"
+  },
+    "lint-staged": {
+    "*.{js,ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ]
+  }
+
+}

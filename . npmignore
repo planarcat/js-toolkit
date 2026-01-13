@@ -1,0 +1,11 @@
+# 默认包含 .gitignore 的内容
+# 额外排除以下
+src/
+__tests__/
+__mocks__/
+tsconfig.json
+jest.config.js
+.eslintrc.js
+.prettierrc
+*.md
+!README.md
