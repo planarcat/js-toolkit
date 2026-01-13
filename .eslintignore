@@ -1,0 +1,25 @@
+# 构建产物
+dist/
+coverage/
+
+# 依赖
+node_modules/
+
+# 配置文件
+*.config.js
+
+# 测试快照
+__snapshots__/
+
+# 临时文件
+*.tmp
+*.log
+
+# IDE 文件
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# 其他
+.DS_Store
