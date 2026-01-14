@@ -5,7 +5,9 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "README.md",
+    "LICENSE"
   ],
   "scripts": {
     "build": "tsc",
@@ -26,19 +28,8 @@
     "typescript",
     "utility",
     "toolkit",
-    "utils",
-    "helpers",
-    "conversion",
-    "date-formatting",
-    "debounce",
-    "throttle",
-    "object-conversion",
-    "functional",
-    "type-safe",
-    "nodejs",
-    "browser",
-    "es6",
-    "modern-javascript"
+    "format-date",
+    "type-safe"
   ],
   "author": "planarcat",
   "license": "MIT",
@@ -74,5 +65,8 @@
       "prettier --write"
     ],
     "\"*.{js,ts,tsx}\"": "[\"eslint --fix\", \"prettier --write\"]"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
