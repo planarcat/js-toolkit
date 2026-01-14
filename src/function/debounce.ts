@@ -7,18 +7,15 @@ import { DebounceOptions, DebouncedFunction } from "@/types/debounce";
  * @param options.delay - 防抖延迟时间，默认500ms
  * @returns 防抖处理后的函数，带有cancel方法
  */
-function debounce<T extends (...args: unknown[]) => unknown>(
-  fn: T,
+function debounce<T extends unknown[]>(
+  fn: (...args: T) => void,
   options: DebounceOptions = {},
 ): DebouncedFunction<T> {
   const { delay = 500 } = options;
 
   let timer: NodeJS.Timeout | null = null;
 
-  const debounced = function (
-    this: ThisParameterType<T>,
-    ...args: Parameters<T>
-  ) {
+  const debounced = function (this: ThisParameterType<T>, ...args: T) {
     if (timer) {
       clearTimeout(timer);
       timer = null;

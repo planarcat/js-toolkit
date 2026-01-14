@@ -12,8 +12,8 @@ export interface DebounceOptions {
  * 防抖处理后的函数接口
  * @template T - 函数类型
  */
-export interface DebouncedFunction<T extends (...args: unknown[]) => unknown> {
-  (...args: Parameters<T>): void;
+export interface DebouncedFunction<T extends unknown[]> {
+  (...args: T): void;
   /**
    * 取消当前正在执行的函数调用
    */
