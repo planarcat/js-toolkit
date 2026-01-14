@@ -31,109 +31,55 @@ pnpm add @planarcat/js-toolkit
 import { formatDate } from '@planarcat/js-toolkit';
 
 // 基本使用
-console.log(formatDate(new Date(), 'YYYY-MM-DD HH:mm:ss'));
+console.log(formatDate(new Date()));
 // 输出: "2023-12-25 14:30:45"
 
 // 自定义格式
 console.log(formatDate('2023-12-25', 'YYYY年MM月DD日'));
 // 输出: "2023年12月25日"
 
-// 显示周几
-console.log(formatDate(new Date(), 'HH:mm', { showWeekday: true }));
+// 使用 dd 标记显示周几
+console.log(formatDate(new Date(), 'dd HH:mm'));
 // 输出: "周一 14:30"
 
 // 英文环境
-console.log(formatDate(new Date(), 'dd', { locale: 'en-US' }));
-// 输出: "Mon"
+console.log(formatDate(new Date(), 'dd HH:mm', { locale: 'en-US' }));
+// 输出: "Monday 14:30"
+```
+
+### 函数防抖
+
+```typescript
+import { debounce } from '@planarcat/js-toolkit';
+
+// 创建防抖函数
+const debouncedFn = debounce(() => {
+  console.log('函数执行了！');
+}, { delay: 500 });
+
+// 多次调用，只会执行最后一次
+debouncedFn();
+debouncedFn();
+debouncedFn();
+// 500ms 后执行一次
 ```
 
 ## API 文档
 
-### formatDate
+详细的 API 文档请查看 [docs/](docs/) 目录下的模块文档：
 
-格式化日期对象为指定格式的字符串。
+- [日期格式化](docs/functions/formatDate.md)
+- [函数防抖](docs/functions/debounce.md)
+- [类型定义](docs/interfaces/)
 
-#### 语法
+### 生成文档
 
-```typescript
-formatDate(input: DateInput, formatStr?: string, options?: Partial<DateFormatOptions>): string
-```
+```bash
+# 生成 API 文档
+npm run docs
 
-#### 参数
-
-- `input` (DateInput): 要格式化的日期输入，可以是：
-  - Date 对象
-  - 时间戳（数字）
-  - 日期字符串（ISO 8601 或其他常见格式）
-
-- `formatStr` (string, 可选): 格式化字符串，默认为 `'YYYY-MM-DD HH:mm:ss'`
-
-- `options` (Partial<DateFormatOptions>, 可选): 格式化选项
-
-#### 格式化标记
-
-| 标记 | 描述 | 示例 |
-|------|------|------|
-| `YYYY` | 四位年份 | 2023 |
-| `YY` | 两位年份 | 23 |
-| `MM` | 两位月份 | 12 |
-| `M` | 月份（不补零） | 12 |
-| `DD` | 两位日期 | 25 |
-| `D` | 日期（不补零） | 25 |
-| `HH` | 24小时制小时 | 14 |
-| `H` | 小时（不补零） | 14 |
-| `hh` | 12小时制小时 | 02 |
-| `h` | 12小时制小时（不补零） | 2 |
-| `mm` | 分钟 | 30 |
-| `m` | 分钟（不补零） | 30 |
-| `ss` | 秒 | 45 |
-| `s` | 秒（不补零） | 45 |
-| `SSS` | 毫秒 | 123 |
-| `A` | 上午/下午（大写） | PM |
-| `a` | 上午/下午（小写） | pm |
-| `d` | 星期几（数字 0-6） | 1 |
-| `dd` | 本地化星期几 | 一 |
-| `WW` | 两位周数 | 52 |
-| `W` | 周数（不补零） | 52 |
-| `Q` | 季度 | 4 |
-| `timestamp` | 时间戳 | 1703485845123 |
-
-#### 选项
-
-```typescript
-interface DateFormatOptions {
-  timeZone?: 'local' | 'utc';          // 时区设置，默认 'local'
-  locale?: string;                     // 语言环境，默认 'zh-CN'
-  showWeekday?: boolean;               // 是否显示周几，默认 false
-  weekdayFormat?: string;              // 周几显示格式，默认 '周'
-  customFormatters?: Record<string, (date: Date) => string>; // 自定义格式化器
-}
-```
-
-#### 示例
-
-```typescript
-// 基本格式化
-formatDate(new Date(), 'YYYY-MM-DD');
-
-// 显示周几
-formatDate(new Date(), 'HH:mm', { showWeekday: true });
-
-// 自定义周几格式
-formatDate(new Date(), 'HH:mm', { 
-  showWeekday: true, 
-  weekdayFormat: '星期' 
-});
-
-// 英文环境
-formatDate(new Date(), 'YYYY-MM-DD dd', { locale: 'en-US' });
-
-// 自定义格式化器
-formatDate(new Date(), '第Q季度', {
-  customFormatters: {
-    '第Q季度': (date) => `第${Math.floor((date.getMonth() + 3) / 3)}季度`
-  }
-});
+# 监听模式生成文档
+npm run docs:watch
 ```
 
 ## 开发

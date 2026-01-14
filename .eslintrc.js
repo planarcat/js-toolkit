@@ -15,6 +15,7 @@ module.exports = {
     "@typescript-eslint/no-explicit-any": "warn",
     "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
     "@typescript-eslint/no-unsupported-version": "off", // 忽略 TypeScript 版本警告
+    "@typescript-eslint/no-this-alias": ["error", { allowedNames: ["self"] }], // 允许使用 self 作为 this 的别名
     "no-useless-escape": "off", // 允许转义字符
   },
   env: {
