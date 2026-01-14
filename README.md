@@ -90,8 +90,11 @@ npm run docs:watch
 src/
 ├── date/
 │   └── formatDate.ts      # 日期格式化函数
+├── function/
+│   └── debounce.ts        # 函数防抖功能
 ├── types/
 │   ├── date.ts            # 日期相关类型定义
+│   ├── debounce.ts        # 防抖相关类型定义
 │   └── index.ts           # 类型导出
 ├── utils/
 │   └── constants.ts       # 常量定义
@@ -154,6 +157,19 @@ npm run test:coverage
 - **planarcat** - [GitHub](https://github.com/planarcat)
 
 ## 更新日志
+
+### v1.2.0
+
+- ✨ 优化日期格式化功能，支持使用 `dd` 标记直接显示周几
+- ✨ 改进文档系统，使用 TypeDoc 自动生成模块化文档
+- ✨ 优化代码结构和类型定义
+
+### v1.1.0
+
+- ✨ 添加函数防抖功能 `debounce`
+- ✨ 支持防抖取消功能 `cancel`
+- ✨ 完善类型定义
+- ✨ 添加防抖函数测试用例
 
 ### v1.0.0
 
