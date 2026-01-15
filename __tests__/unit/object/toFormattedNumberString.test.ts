@@ -169,6 +169,91 @@ describe("toFormattedNumberString 函数测试", () => {
         }),
       ).toBe("~12.34%");
     });
+
+    it("应该为0值添加前缀和后缀", () => {
+      expect(toFormattedNumberString(0, { prefix: "$" })).toBe("$0");
+      expect(toFormattedNumberString(0, { suffix: " USD" })).toBe("0 USD");
+      expect(toFormattedNumberString(0, { prefix: "$", suffix: " USD" })).toBe(
+        "$0 USD",
+      );
+    });
+
+    it("应该为NaN值添加前缀和后缀", () => {
+      expect(toFormattedNumberString(null, { prefix: "$" })).toBe("$NaN");
+      expect(toFormattedNumberString(null, { suffix: " USD" })).toBe("NaN USD");
+      expect(
+        toFormattedNumberString(null, { prefix: "$", suffix: " USD" }),
+      ).toBe("$NaN USD");
+    });
+
+    it("应该为无数字字符串添加前缀和后缀", () => {
+      expect(toFormattedNumberString("abc", { prefix: "$" })).toBe("$0");
+      expect(toFormattedNumberString("", { suffix: " USD" })).toBe("0 USD");
+      expect(
+        toFormattedNumberString("xyz", { prefix: "$", suffix: " USD" }),
+      ).toBe("$0 USD");
+    });
+
+    it("应该为自定义0值和NaN值添加前缀和后缀", () => {
+      expect(toFormattedNumberString(0, { prefix: "$", zeroValue: "-" })).toBe(
+        "$-",
+      );
+      expect(
+        toFormattedNumberString(null, { suffix: " USD", nanValue: "N/A" }),
+      ).toBe("N/A USD");
+      expect(
+        toFormattedNumberString("abc", {
+          prefix: "$",
+          suffix: " USD",
+          zeroValue: "0.00",
+        }),
+      ).toBe("$0.00 USD");
+    });
+
+    it("应该支持函数类型的前缀", () => {
+      expect(
+        toFormattedNumberString(123.456, {
+          prefix: (num) => `$${Math.floor(num)}`,
+        }),
+      ).toBe("$123123.456");
+      expect(
+        toFormattedNumberString(0, {
+          prefix: (num) => (num === 0 ? "免费" : "$"),
+        }),
+      ).toBe("免费0");
+    });
+
+    it("应该支持函数类型的后缀", () => {
+      expect(
+        toFormattedNumberString(123.456, {
+          suffix: (num) => `/${num.toFixed(0)}`,
+        }),
+      ).toBe("123.456/123");
+      expect(
+        toFormattedNumberString(0, {
+          suffix: (num) => (num === 0 ? " (免费)" : ""),
+        }),
+      ).toBe("0 (免费)");
+    });
+
+    it("应该同时支持函数类型的前缀和后缀", () => {
+      expect(
+        toFormattedNumberString(123.456, {
+          prefix: (num) => `金额: $${Math.round(num)}`,
+          suffix: (num) => ` (精确值: ${num})`,
+        }),
+      ).toBe("金额: $123123.456 (精确值: 123.456)");
+    });
+
+    it("应该在预处理函数后应用函数类型的前缀后缀", () => {
+      expect(
+        toFormattedNumberString(0.1234, {
+          preProcessor: (num) => num * 100,
+          prefix: (num) => `~${num}% `,
+          suffix: (num) => ` (${num.toFixed(2)}%)`,
+        }),
+      ).toBe("~12.34% 12.34 (12.34%)");
+    });
   });
 
   describe("数组测试", () => {

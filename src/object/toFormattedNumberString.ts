@@ -14,8 +14,10 @@
  * @param options.zeroValue - 当值为0时的显示，默认'0'
  * @param options.useLocalizedFormat - 是否使用本地化格式，默认false
  * @param options.preProcessor - 预处理函数，在数字转换后、字符串格式化前应用
- * @param options.prefix - 前缀，默认''
- * @param options.suffix - 后缀，默认''
+ * @param options.prefix - 前缀，可以是字符串或函数，默认''
+ *                          如果是函数，会接收格式化前的数字作为参数，返回字符串作为前缀
+ * @param options.suffix - 后缀，可以是字符串或函数，默认''
+ *                          如果是函数，会接收格式化前的数字作为参数，返回字符串作为后缀
  *
  * @returns 格式化后的数字字符串或字符串数组
  *          - 如果输入是单个值，返回格式化后的字符串
@@ -45,6 +47,16 @@
  *   preProcessor: (num) => num * 100,
  *   suffix: '%'
  * }); // "12.34%"
+ *
+ * // 函数类型前缀
+ * toFormattedNumberString(123.456, {
+ *   prefix: (num) => `$${Math.floor(num)}`
+ * }); // "$123123.456"
+ *
+ * // 函数类型后缀
+ * toFormattedNumberString(123.456, {
+ *   suffix: (num) => `/${num.toFixed(0)}`
+ * }); // "123.456/123"
  *
  * // 处理数组
  * toFormattedNumberString([123.456, '789.012'], { decimalPlaces: 2 }); // ["123.46", "789.01"]
@@ -83,6 +95,34 @@ function toFormattedNumberString(
   } = options || {};
 
   /**
+   * 处理前缀或后缀，可以是字符串或函数
+   * @param prefixOrSuffix - 前缀或后缀，可以是字符串或函数
+   * @param num - 要传递给函数的数字
+   * @returns 处理后的前缀或后缀字符串
+   */
+  const processPrefixSuffix = (
+    prefixOrSuffix: string | ((value: number) => string),
+    num: number,
+  ): string => {
+    if (typeof prefixOrSuffix === "function") {
+      return prefixOrSuffix(num);
+    }
+    return prefixOrSuffix;
+  };
+
+  /**
+   * 添加前缀和后缀
+   * @param str - 要添加前缀后缀的字符串
+   * @param num - 要传递给前缀后缀函数的数字
+   * @returns 添加了前缀后缀的字符串
+   */
+  const addPrefixSuffix = (str: string, num: number): string => {
+    const processedPrefix = processPrefixSuffix(prefix, num);
+    const processedSuffix = processPrefixSuffix(suffix, num);
+    return `${processedPrefix}${str}${processedSuffix}`;
+  };
+
+  /**
    * 将单个数字转换为格式化字符串
    * @param num - 要转换的数字
    * @returns 格式化后的字符串
@@ -90,7 +130,7 @@ function toFormattedNumberString(
   const convertNumberToString = (num: number): string => {
     // 处理0情况
     if (num === 0) {
-      return zeroValue;
+      return addPrefixSuffix(zeroValue, num);
     }
 
     // 应用预处理函数
@@ -122,7 +162,7 @@ function toFormattedNumberString(
     }
 
     // 添加前缀和后缀
-    return `${prefix}${strNum}${suffix}`;
+    return addPrefixSuffix(strNum, processedNum);
   };
 
   /**
@@ -147,7 +187,7 @@ function toFormattedNumberString(
       // 检查是否为无数字的字符串
       if (typeof value === "string" && !hasNumbers(value)) {
         // 无数字的字符串返回0
-        return zeroValue;
+        return addPrefixSuffix(zeroValue, 0);
       }
 
       // 对于其他类型，首先将输入转换为数字
@@ -160,7 +200,7 @@ function toFormattedNumberString(
       // 检查是否为NaN
       if (isNaN(num)) {
         // 其他NaN情况，使用nanValue
-        return nanValue;
+        return addPrefixSuffix(nanValue, num);
       }
 
       // 正常数字转换

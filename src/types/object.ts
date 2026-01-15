@@ -46,13 +46,13 @@ export interface ToFormattedNumberStringOptions extends CommonFormatOptions {
    */
   preProcessor?: (num: number) => number;
   /**
-   * 前缀，
+   * 前缀，可以是字符串或函数，
    * 默认''。
    */
-  prefix?: string;
+  prefix?: string | ((value: number) => string);
   /**
-   * 后缀，
+   * 后缀，可以是字符串或函数，
    * 默认''。
    */
-  suffix?: string;
+  suffix?: string | ((value: number) => string);
 }

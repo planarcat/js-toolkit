@@ -231,6 +231,15 @@ npm run test:coverage
 
 ## 更新日志
 
+### v1.4.0
+
+- ✨ 优化数字格式化功能，无数字字符串返回 `0` 而不是 `NaN`
+- ✨ 改进 `toFormattedNumberString` 函数，无数字字符串直接返回 `zeroValue`
+- ✨ 为 `toFormattedNumberString` 函数的前缀后缀添加函数类型支持
+- ✨ 完善文档和测试用例
+- ✨ 优化深层数组处理逻辑
+- ✨ 修复 0 值、NaN 值和无数字字符串的前缀后缀处理问题
+
 ### v1.3.0
 
 - ✨ 添加数字格式化功能 `toFormattedNumber`
