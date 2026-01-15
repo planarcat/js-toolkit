@@ -10,7 +10,7 @@
 
 > **toFormattedNumber**(`object`, `options?`): `number`[]
 
-Defined in: [object/toFormattedNumber.ts:99](https://github.com/planarcat/js-toolkit/blob/a3ca9884cc4edfd17a2419cab850ef9fc80e9b52/src/object/toFormattedNumber.ts#L99)
+Defined in: [object/toFormattedNumber.ts:101](https://github.com/planarcat/js-toolkit/blob/4ffa3427bb295bdc5c491988a0403054e960bb18/src/object/toFormattedNumber.ts#L101)
 
 将任意对象转化为数字，然后根据格式化参数对转化后的数字进行格式化
 
@@ -24,7 +24,7 @@ Defined in: [object/toFormattedNumber.ts:99](https://github.com/planarcat/js-too
 
 `unknown`[]
 
-要格式化的对象，可以是任何类型
+要格式化的目标
 
 #### options?
 
@@ -61,28 +61,30 @@ toFormattedNumber(null); // NaN
 toFormattedNumber(undefined); // NaN
 toFormattedNumber(Symbol('test')); // NaN
 toFormattedNumber(() => {}); // NaN
+toFormattedNumber('abc'); // 0
+toFormattedNumber(''); // 0
 
 // 一维数组
 toFormattedNumber([123.456, '456.789def']); // [123.456, 456.789]
 
 // 深层数组
 toFormattedNumber([[1, '1', null], 'xxx', ['123a', ['123', '456ff']]]);
-// 返回: [[1, 1, NaN], NaN, [123, [123, 456]]]
+// 返回: [[1, 1, NaN], 0, [123, [123, 456]]]
 
 // 保留指定小数位
 toFormattedNumber(123.456, { decimalPlaces: 2 }); // 123.46
 toFormattedNumber(123.456, { decimalPlaces: 0 }); // 123
 
 // 自定义NaN显示
-toFormattedNumber(null, { nanDisplay: 0 }); // 0
-toFormattedNumber('abc', { nanDisplay: -1 }); // -1
+toFormattedNumber(null, { nanValue: 0 }); // 0
+toFormattedNumber('abc', { nanValue: -1 }); // -1
 ```
 
 ## Call Signature
 
 > **toFormattedNumber**(`object`, `options?`): `number` \| `number`[]
 
-Defined in: [object/toFormattedNumber.ts:104](https://github.com/planarcat/js-toolkit/blob/a3ca9884cc4edfd17a2419cab850ef9fc80e9b52/src/object/toFormattedNumber.ts#L104)
+Defined in: [object/toFormattedNumber.ts:103](https://github.com/planarcat/js-toolkit/blob/4ffa3427bb295bdc5c491988a0403054e960bb18/src/object/toFormattedNumber.ts#L103)
 
 将任意对象转化为数字，然后根据格式化参数对转化后的数字进行格式化
 
@@ -96,7 +98,7 @@ Defined in: [object/toFormattedNumber.ts:104](https://github.com/planarcat/js-to
 
 `unknown`
 
-要格式化的对象，可以是任何类型
+要格式化的目标
 
 #### options?
 
@@ -133,19 +135,21 @@ toFormattedNumber(null); // NaN
 toFormattedNumber(undefined); // NaN
 toFormattedNumber(Symbol('test')); // NaN
 toFormattedNumber(() => {}); // NaN
+toFormattedNumber('abc'); // 0
+toFormattedNumber(''); // 0
 
 // 一维数组
 toFormattedNumber([123.456, '456.789def']); // [123.456, 456.789]
 
 // 深层数组
 toFormattedNumber([[1, '1', null], 'xxx', ['123a', ['123', '456ff']]]);
-// 返回: [[1, 1, NaN], NaN, [123, [123, 456]]]
+// 返回: [[1, 1, NaN], 0, [123, [123, 456]]]
 
 // 保留指定小数位
 toFormattedNumber(123.456, { decimalPlaces: 2 }); // 123.46
 toFormattedNumber(123.456, { decimalPlaces: 0 }); // 123
 
 // 自定义NaN显示
-toFormattedNumber(null, { nanDisplay: 0 }); // 0
-toFormattedNumber('abc', { nanDisplay: -1 }); // -1
+toFormattedNumber(null, { nanValue: 0 }); // 0
+toFormattedNumber('abc', { nanValue: -1 }); // -1
 ```

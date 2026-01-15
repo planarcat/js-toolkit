@@ -18,7 +18,11 @@ export const LIBRARY_NAME = "@planarcat/js-toolkit";
 
 // 对象相关工具
 export { default as toFormattedNumber } from "./object/toFormattedNumber";
-export type { ToFormattedNumberOptions } from "./types/object";
+export { default as toFormattedNumberString } from "./object/toFormattedNumberString";
+export type {
+  ToFormattedNumberOptions,
+  ToFormattedNumberStringOptions,
+} from "./types/object";
 
 // 工具函数（后续添加）
 // export { default as toNumber } from './number/toNumber';

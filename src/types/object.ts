@@ -18,5 +18,41 @@ export interface ToFormattedNumberOptions extends CommonFormatOptions {
    * 当值为NaN时的显示，
    * 默认NaN。
    */
-  nanDisplay?: number;
+  nanValue?: number;
+}
+
+/**
+ * toFormattedNumberString 函数的选项接口
+ */
+export interface ToFormattedNumberStringOptions extends CommonFormatOptions {
+  /**
+   * 当值为NaN时的显示，
+   * 默认'NaN'。
+   */
+  nanValue?: string;
+  /**
+   * 当值为0时的显示，
+   * 默认'0'。
+   */
+  zeroValue?: string;
+  /**
+   * 是否显示本地化，
+   * 默认false。
+   */
+  useLocalizedFormat?: boolean;
+  /**
+   * 预处理函数，在对象被处理为数字后调用，
+   * 默认无。
+   */
+  preProcessor?: (num: number) => number;
+  /**
+   * 前缀，
+   * 默认''。
+   */
+  prefix?: string;
+  /**
+   * 后缀，
+   * 默认''。
+   */
+  suffix?: string;
 }

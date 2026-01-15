@@ -53,9 +53,12 @@ console.log(formatDate(new Date(), 'dd HH:mm', { locale: 'en-US' }));
 import { debounce } from '@planarcat/js-toolkit';
 
 // 创建防抖函数
-const debouncedFn = debounce(() => {
-  console.log('函数执行了！');
-}, { delay: 500 });
+const debouncedFn = debounce(
+    () => {
+        console.log('函数执行了！');
+    },
+    { delay: 500 }
+);
 
 // 多次调用，只会执行最后一次
 debouncedFn();
@@ -64,12 +67,79 @@ debouncedFn();
 // 500ms 后执行一次
 ```
 
+### 数字格式化
+
+```typescript
+import { toFormattedNumber, toFormattedNumberString } from '@planarcat/js-toolkit';
+
+// 基本使用
+console.log(toFormattedNumber(1234.5678));
+// 输出: 1234.5678
+
+// 保留两位小数
+console.log(toFormattedNumber(1234.5678, { decimalPlaces: 2 }));
+// 输出: 1234.57
+
+// 处理字符串
+console.log(toFormattedNumber('123.45abc'));
+// 输出: 123.45
+
+// 处理数组
+console.log(toFormattedNumber([123.456, '456.789']));
+// 输出: [123.456, 456.789]
+
+// 处理深层数组
+console.log(
+    toFormattedNumber([
+        [1, '1.23'],
+        ['45.67', [89.01, 'abc']],
+    ])
+);
+// 输出: [[1, 1.23], [45.67, [89.01, NaN]]]
+
+// 数字转格式化字符串
+console.log(toFormattedNumberString(1234.5678, { decimalPlaces: 2 }));
+// 输出: "1234.57"
+
+// 保留两位小数，不够时补0
+console.log(toFormattedNumberString(123.4, { decimalPlaces: 2 }));
+// 输出: "123.40"
+
+// 带前缀后缀
+console.log(toFormattedNumberString(1234.5678, { prefix: '$', suffix: ' USD' }));
+// 输出: "$1234.5678 USD"
+
+// 本地化格式
+console.log(toFormattedNumberString(1234567.89, { useLocalizedFormat: true }));
+// 输出: "1,234,567.89"
+
+// 自定义NaN和0显示
+console.log(toFormattedNumberString(null, { nanValue: 'N/A' }));
+// 输出: "N/A"
+console.log(toFormattedNumberString(0, { zeroValue: '-' }));
+// 输出: "-"
+
+// 预处理函数
+console.log(
+    toFormattedNumberString(0.1234, {
+        preProcessor: num => num * 100,
+        suffix: '%',
+    })
+);
+// 输出: "12.34%"
+
+// 处理数组
+console.log(toFormattedNumberString([123.456, '789.012'], { decimalPlaces: 2 }));
+// 输出: ["123.46", "789.01"]
+```
+
 ## API 文档
 
 详细的 API 文档请查看 [docs/](docs/) 目录下的模块文档：
 
 - [日期格式化](docs/functions/formatDate.md)
 - [函数防抖](docs/functions/debounce.md)
+- [数字格式化](docs/functions/toFormattedNumber.md)
 - [类型定义](docs/interfaces/)
 
 ### 生成文档
@@ -92,9 +162,12 @@ src/
 │   └── formatDate.ts      # 日期格式化函数
 ├── function/
 │   └── debounce.ts        # 函数防抖功能
+├── object/
+│   └── toFormattedNumber.ts  # 数字格式化函数
 ├── types/
 │   ├── date.ts            # 日期相关类型定义
-│   ├── debounce.ts        # 防抖相关类型定义
+│   ├── function.ts        # 防抖相关类型定义
+│   ├── object.ts          # 数字格式化相关类型定义
 │   └── index.ts           # 类型导出
 ├── utils/
 │   └── constants.ts       # 常量定义
@@ -157,6 +230,15 @@ npm run test:coverage
 - **planarcat** - [GitHub](https://github.com/planarcat)
 
 ## 更新日志
+
+### v1.3.0
+
+- ✨ 添加数字格式化功能 `toFormattedNumber`
+- ✨ 支持处理任意输入类型（number、string、array、deep array）
+- ✨ 支持自定义小数位数和 NaN 显示
+- ✨ 支持深层数组递归处理
+- ✨ 完善的类型定义和 JSDoc 注释
+- ✨ 新增 object 分类目录结构
 
 ### v1.2.0
 

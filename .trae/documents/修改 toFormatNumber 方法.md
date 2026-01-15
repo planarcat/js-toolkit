@@ -2,7 +2,7 @@
 
 ## 1. 类型定义修改
 
-- 保留现有 `NanDisplayType` 类型
+- 保留现有 `nanValueType` 类型
 - 新增 `ReturnTypeOption` 类型：`'string' | 'number'`
 - 定义函数重载，根据 `returnType` 和输入是否为数组返回不同类型
 
@@ -21,21 +21,25 @@ toFormatNumber(object: any[], options?: ToFormatNumberOptions): string[];
 ## 3. 核心实现修改
 
 ### 3.1 参数处理
+
 - 将 `num: number` 改为 `object: any`
 - 新增 `returnType` 选项，默认值为 `'string'`
 
 ### 3.2 数组检测与处理
+
 - 检测输入是否为数组：`Array.isArray(object)`
 - 如果是数组，遍历处理每个元素
 - 如果不是数组，转换为单个元素数组处理
 - 根据输入类型返回对应类型数组或单个值
 
 ### 3.3 类型转换逻辑
+
 - 检查输入类型，处理特殊类型（function、null、undefined、symbol 等）
 - 对于可转换为数字的值，进行格式化
-- 对于不可转换的值，根据 `nanDisplay` 处理
+- 对于不可转换的值，根据 `nanValue` 处理
 
 ### 3.4 返回值处理
+
 - 单个值情况：根据 `returnType` 返回 string 或 number
 - 数组情况：根据 `returnType` 返回 string[] 或 number[]
 - 确保类型安全，使用 TypeScript 类型断言
@@ -66,7 +70,7 @@ toFormatNumber([123, '456.789', null], { decimalPlaces: 2 }); // 返回: ['123',
 toFormatNumber([123, '456.789', null], { decimalPlaces: 2, returnType: 'number' }); // 返回: [123, 456.79, NaN]
 
 // 处理特殊类型
-toFormatNumber(function() {}, { nanDisplay: 'N/A' }); // 返回: 'N/A'
+toFormatNumber(function () {}, { nanValue: 'N/A' }); // 返回: 'N/A'
 ```
 
 ## 6. 兼容性考虑

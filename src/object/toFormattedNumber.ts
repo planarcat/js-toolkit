@@ -20,7 +20,7 @@ function convertToNumber(value: unknown): number {
       return value;
     case "string": {
       const numStr = extractNumberFromString(value);
-      return numStr ? Number(numStr) : NaN;
+      return numStr ? Number(numStr) : 0;
     }
     case "boolean":
       return value ? 1 : 0;
@@ -47,12 +47,12 @@ function convertToNumber(value: unknown): number {
  * 对于字符串，会提取其中的数字部分进行转换
  * 支持深层数组递归处理
  *
- * @param object - 要格式化的对象，可以是任何类型
+ * @param object - 要格式化的目标
  * @param options - 格式化选项
  * @param options.decimalPlaces - 保留多少位小数，默认true（保留所有小数位）
  *                               true: 保留所有小数位，不额外处理
  *                               number: 保留指定小数位，四舍五入
- * @param options.nanDisplay - 当值为NaN时的显示，默认NaN
+ * @param options.nanValue - 当值为NaN时的显示，默认NaN
  *
  * @returns 格式化后的数字或数字数组
  *          - 如果输入是单个值，返回格式化后的数字
@@ -78,21 +78,23 @@ function convertToNumber(value: unknown): number {
  * toFormattedNumber(undefined); // NaN
  * toFormattedNumber(Symbol('test')); // NaN
  * toFormattedNumber(() => {}); // NaN
+ * toFormattedNumber('abc'); // 0
+ * toFormattedNumber(''); // 0
  *
  * // 一维数组
  * toFormattedNumber([123.456, '456.789def']); // [123.456, 456.789]
  *
  * // 深层数组
  * toFormattedNumber([[1, '1', null], 'xxx', ['123a', ['123', '456ff']]]);
- * // 返回: [[1, 1, NaN], NaN, [123, [123, 456]]]
+ * // 返回: [[1, 1, NaN], 0, [123, [123, 456]]]
  *
  * // 保留指定小数位
  * toFormattedNumber(123.456, { decimalPlaces: 2 }); // 123.46
  * toFormattedNumber(123.456, { decimalPlaces: 0 }); // 123
  *
  * // 自定义NaN显示
- * toFormattedNumber(null, { nanDisplay: 0 }); // 0
- * toFormattedNumber('abc', { nanDisplay: -1 }); // -1
+ * toFormattedNumber(null, { nanValue: 0 }); // 0
+ * toFormattedNumber('abc', { nanValue: -1 }); // -1
  * ```
  */
 // 函数重载定义 - 数组输入
@@ -111,7 +113,7 @@ function toFormattedNumber(
   options?: import("../types/object").ToFormattedNumberOptions,
 ): number | number[] {
   // 解构并设置默认值
-  const { decimalPlaces = true, nanDisplay = NaN } = options || {};
+  const { decimalPlaces = true, nanValue = NaN } = options || {};
 
   /**
    * 格式化单个数字
@@ -121,7 +123,7 @@ function toFormattedNumber(
   const formatSingleNumber = (num: number): number => {
     // 处理NaN情况
     if (isNaN(num)) {
-      return nanDisplay;
+      return nanValue;
     }
 
     // 根据decimalPlaces选项处理小数位

@@ -4,7 +4,7 @@ import { DebounceOptions, DebouncedFunction } from "@/types/function";
  * 将函数进行防抖处理
  * @param fn - 需要防抖处理的函数
  * @param delay - 防抖延迟时间，默认100ms
- * @param options - 配置选项
+ * @param _options - 配置选项（当前未使用）
  * @returns 防抖处理后的函数，带有cancel方法
  */
 function debounce<T extends unknown[]>(

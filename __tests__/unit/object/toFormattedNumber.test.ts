@@ -29,9 +29,9 @@ describe("toFormattedNumber 函数测试", () => {
       expect(toFormattedNumber(" 123.456 ")).toBe(123.456);
     });
 
-    it("应该对无数字的字符串返回NaN", () => {
-      expect(toFormattedNumber("abc")).toBeNaN();
-      expect(toFormattedNumber("")).toBeNaN();
+    it("应该对无数字的字符串返回0", () => {
+      expect(toFormattedNumber("abc")).toBe(0);
+      expect(toFormattedNumber("")).toBe(0);
     });
 
     it("应该正确处理科学计数法字符串", () => {
@@ -104,14 +104,14 @@ describe("toFormattedNumber 函数测试", () => {
         ["123a", ["123", "456ff"]],
       ]);
       // 验证深层数组递归处理
-      expect(result).toEqual([[1, 1, NaN], NaN, [123, [123, 456]]]);
+      expect(result).toEqual([[1, 1, NaN], 0, [123, [123, 456]]]);
     });
   });
 
   describe("选项测试", () => {
-    it("应该正确处理自定义nanDisplay", () => {
-      expect(toFormattedNumber(null, { nanDisplay: 0 })).toBe(0);
-      expect(toFormattedNumber("abc", { nanDisplay: -1 })).toBe(-1);
+    it("应该正确处理自定义nanValue", () => {
+      expect(toFormattedNumber(null, { nanValue: 0 })).toBe(0);
+      expect(toFormattedNumber(undefined, { nanValue: -1 })).toBe(-1);
     });
 
     it("应该处理不同的decimalPlaces值", () => {
