@@ -6,7 +6,7 @@
 
 # Interface: DateFormatOptions
 
-Defined in: [types/date.ts:4](https://github.com/planarcat/js-toolkit/blob/b539a54bf46075072dfc39d0760bedb8cac956dd/src/types/date.ts#L4)
+Defined in: [types/date.ts:4](https://github.com/planarcat/js-toolkit/blob/2d287284a8d9b5d0c489f31752314a5836431ab4/src/types/date.ts#L4)
 
 日期格式化选项接口
 
@@ -16,7 +16,7 @@ Defined in: [types/date.ts:4](https://github.com/planarcat/js-toolkit/blob/b539a
 
 > `optional` **timeZone**: `"local"` \| `"utc"`
 
-Defined in: [types/date.ts:9](https://github.com/planarcat/js-toolkit/blob/b539a54bf46075072dfc39d0760bedb8cac956dd/src/types/date.ts#L9)
+Defined in: [types/date.ts:9](https://github.com/planarcat/js-toolkit/blob/2d287284a8d9b5d0c489f31752314a5836431ab4/src/types/date.ts#L9)
 
 时区设置
 
@@ -32,7 +32,7 @@ Defined in: [types/date.ts:9](https://github.com/planarcat/js-toolkit/blob/b539a
 
 > `optional` **locale**: `string`
 
-Defined in: [types/date.ts:15](https://github.com/planarcat/js-toolkit/blob/b539a54bf46075072dfc39d0760bedb8cac956dd/src/types/date.ts#L15)
+Defined in: [types/date.ts:15](https://github.com/planarcat/js-toolkit/blob/2d287284a8d9b5d0c489f31752314a5836431ab4/src/types/date.ts#L15)
 
 语言环境
 
@@ -48,6 +48,6 @@ Defined in: [types/date.ts:15](https://github.com/planarcat/js-toolkit/blob/b539
 
 > `optional` **customFormatters**: `Record`\<`string`, (`date`) => `string`\>
 
-Defined in: [types/date.ts:20](https://github.com/planarcat/js-toolkit/blob/b539a54bf46075072dfc39d0760bedb8cac956dd/src/types/date.ts#L20)
+Defined in: [types/date.ts:20](https://github.com/planarcat/js-toolkit/blob/2d287284a8d9b5d0c489f31752314a5836431ab4/src/types/date.ts#L20)
 
 自定义格式化处理器

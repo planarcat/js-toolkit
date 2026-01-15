@@ -128,6 +128,22 @@ console.log(
 );
 // 输出: "12.34%"
 
+// 函数类型前缀
+console.log(
+    toFormattedNumberString(123.456, {
+        prefix: num => `$${Math.floor(num)}`,
+    })
+);
+// 输出: "$123123.456"
+
+// 函数类型后缀
+console.log(
+    toFormattedNumberString(123.456, {
+        suffix: num => `/${num.toFixed(0)}`,
+    })
+);
+// 输出: "123.456/123"
+
 // 处理数组
 console.log(toFormattedNumberString([123.456, '789.012'], { decimalPlaces: 2 }));
 // 输出: ["123.46", "789.01"]
@@ -163,7 +179,8 @@ src/
 ├── function/
 │   └── debounce.ts        # 函数防抖功能
 ├── object/
-│   └── toFormattedNumber.ts  # 数字格式化函数
+│   ├── toFormattedNumber.ts  # 数字格式化函数
+│   └── toFormattedNumberString.ts  # 格式化数字字符串函数
 ├── types/
 │   ├── date.ts            # 日期相关类型定义
 │   ├── function.ts        # 防抖相关类型定义
@@ -231,14 +248,19 @@ npm run test:coverage
 
 ## 更新日志
 
+### v1.5.0
+
+- ✨ 为 `toFormattedNumberString` 函数的前缀后缀添加函数类型支持
+- ✨ 修复 0 值、NaN 值和无数字字符串的前缀后缀处理问题
+- ✨ 完善文档和测试用例，确保覆盖所有功能
+- ✨ 优化项目规则文件结构，采用分层管理
+
 ### v1.4.0
 
 - ✨ 优化数字格式化功能，无数字字符串返回 `0` 而不是 `NaN`
 - ✨ 改进 `toFormattedNumberString` 函数，无数字字符串直接返回 `zeroValue`
-- ✨ 为 `toFormattedNumberString` 函数的前缀后缀添加函数类型支持
 - ✨ 完善文档和测试用例
 - ✨ 优化深层数组处理逻辑
-- ✨ 修复 0 值、NaN 值和无数字字符串的前缀后缀处理问题
 
 ### v1.3.0
 

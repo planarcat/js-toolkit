@@ -8,4 +8,4 @@
 
 > `const` **LIBRARY\_NAME**: `"@planarcat/js-toolkit"` = `"@planarcat/js-toolkit"`
 
-Defined in: [index.ts:17](https://github.com/planarcat/js-toolkit/blob/b539a54bf46075072dfc39d0760bedb8cac956dd/src/index.ts#L17)
+Defined in: [index.ts:17](https://github.com/planarcat/js-toolkit/blob/2d287284a8d9b5d0c489f31752314a5836431ab4/src/index.ts#L17)

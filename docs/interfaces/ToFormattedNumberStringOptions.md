@@ -6,7 +6,7 @@
 
 # Interface: ToFormattedNumberStringOptions
 
-Defined in: [types/object.ts:27](https://github.com/planarcat/js-toolkit/blob/b539a54bf46075072dfc39d0760bedb8cac956dd/src/types/object.ts#L27)
+Defined in: [types/object.ts:27](https://github.com/planarcat/js-toolkit/blob/2d287284a8d9b5d0c489f31752314a5836431ab4/src/types/object.ts#L27)
 
 toFormattedNumberString 函数的选项接口
 
@@ -20,7 +20,7 @@ toFormattedNumberString 函数的选项接口
 
 > `optional` **decimalPlaces**: `number` \| `true`
 
-Defined in: [types/object.ts:10](https://github.com/planarcat/js-toolkit/blob/b539a54bf46075072dfc39d0760bedb8cac956dd/src/types/object.ts#L10)
+Defined in: [types/object.ts:10](https://github.com/planarcat/js-toolkit/blob/2d287284a8d9b5d0c489f31752314a5836431ab4/src/types/object.ts#L10)
 
 保留多少位小数，
 默认true（保留所有小数位，不额外处理），
@@ -36,7 +36,7 @@ Defined in: [types/object.ts:10](https://github.com/planarcat/js-toolkit/blob/b5
 
 > `optional` **nanValue**: `string`
 
-Defined in: [types/object.ts:32](https://github.com/planarcat/js-toolkit/blob/b539a54bf46075072dfc39d0760bedb8cac956dd/src/types/object.ts#L32)
+Defined in: [types/object.ts:32](https://github.com/planarcat/js-toolkit/blob/2d287284a8d9b5d0c489f31752314a5836431ab4/src/types/object.ts#L32)
 
 当值为NaN时的显示，
 默认'NaN'。
@@ -47,7 +47,7 @@ Defined in: [types/object.ts:32](https://github.com/planarcat/js-toolkit/blob/b5
 
 > `optional` **zeroValue**: `string`
 
-Defined in: [types/object.ts:37](https://github.com/planarcat/js-toolkit/blob/b539a54bf46075072dfc39d0760bedb8cac956dd/src/types/object.ts#L37)
+Defined in: [types/object.ts:37](https://github.com/planarcat/js-toolkit/blob/2d287284a8d9b5d0c489f31752314a5836431ab4/src/types/object.ts#L37)
 
 当值为0时的显示，
 默认'0'。
@@ -58,7 +58,7 @@ Defined in: [types/object.ts:37](https://github.com/planarcat/js-toolkit/blob/b5
 
 > `optional` **useLocalizedFormat**: `boolean`
 
-Defined in: [types/object.ts:42](https://github.com/planarcat/js-toolkit/blob/b539a54bf46075072dfc39d0760bedb8cac956dd/src/types/object.ts#L42)
+Defined in: [types/object.ts:42](https://github.com/planarcat/js-toolkit/blob/2d287284a8d9b5d0c489f31752314a5836431ab4/src/types/object.ts#L42)
 
 是否显示本地化，
 默认false。
@@ -69,7 +69,7 @@ Defined in: [types/object.ts:42](https://github.com/planarcat/js-toolkit/blob/b5
 
 > `optional` **preProcessor**: (`num`) => `number`
 
-Defined in: [types/object.ts:47](https://github.com/planarcat/js-toolkit/blob/b539a54bf46075072dfc39d0760bedb8cac956dd/src/types/object.ts#L47)
+Defined in: [types/object.ts:47](https://github.com/planarcat/js-toolkit/blob/2d287284a8d9b5d0c489f31752314a5836431ab4/src/types/object.ts#L47)
 
 预处理函数，在对象被处理为数字后调用，
 默认无。
@@ -90,7 +90,7 @@ Defined in: [types/object.ts:47](https://github.com/planarcat/js-toolkit/blob/b5
 
 > `optional` **prefix**: `string` \| (`value`) => `string`
 
-Defined in: [types/object.ts:52](https://github.com/planarcat/js-toolkit/blob/b539a54bf46075072dfc39d0760bedb8cac956dd/src/types/object.ts#L52)
+Defined in: [types/object.ts:52](https://github.com/planarcat/js-toolkit/blob/2d287284a8d9b5d0c489f31752314a5836431ab4/src/types/object.ts#L52)
 
 前缀，可以是字符串或函数，
 默认''。
@@ -101,7 +101,7 @@ Defined in: [types/object.ts:52](https://github.com/planarcat/js-toolkit/blob/b5
 
 > `optional` **suffix**: `string` \| (`value`) => `string`
 
-Defined in: [types/object.ts:57](https://github.com/planarcat/js-toolkit/blob/b539a54bf46075072dfc39d0760bedb8cac956dd/src/types/object.ts#L57)
+Defined in: [types/object.ts:57](https://github.com/planarcat/js-toolkit/blob/2d287284a8d9b5d0c489f31752314a5836431ab4/src/types/object.ts#L57)
 
 后缀，可以是字符串或函数，
 默认''。
