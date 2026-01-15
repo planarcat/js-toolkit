@@ -8,7 +8,7 @@
 
 > **formatDate**(`input`, `formatStr`, `options`): `string`
 
-Defined in: [date/formatDate.ts:101](https://github.com/planarcat/js-toolkit/blob/672411e0fda3587e0c2538c102bfb2dfd862c35d/src/date/formatDate.ts#L101)
+Defined in: [date/formatDate.ts:101](https://github.com/planarcat/js-toolkit/blob/a3ca9884cc4edfd17a2419cab850ef9fc80e9b52/src/date/formatDate.ts#L101)
 
 格式化日期对象
 
