@@ -6,9 +6,9 @@
 
 # Function: debounce()
 
-> **debounce**\<`T`\>(`fn`, `options`): [`DebouncedFunction`](../interfaces/DebouncedFunction.md)\<`T`\>
+> **debounce**\<`T`\>(`fn`, `delay`, `_options`): [`DebouncedFunction`](../interfaces/DebouncedFunction.md)\<`T`\>
 
-Defined in: function/debounce.ts:10
+Defined in: [function/debounce.ts:10](https://github.com/planarcat/js-toolkit/blob/81fd1105ef677c73b93b4ee2f6c7b089ac7edae9/src/function/debounce.ts#L10)
 
 将函数进行防抖处理
 
@@ -16,21 +16,25 @@ Defined in: function/debounce.ts:10
 
 ### T
 
-`T` *extends* (...`args`) => `unknown`
+`T` *extends* `unknown`[]
 
 ## Parameters
 
 ### fn
 
-`T`
+(...`args`) => `void`
 
 需要防抖处理的函数
 
-### options
+### delay
+
+`number` = `100`
+
+防抖延迟时间，默认100ms
+
+### \_options
 
 [`DebounceOptions`](../interfaces/DebounceOptions.md) = `{}`
-
-配置选项
 
 ## Returns
 

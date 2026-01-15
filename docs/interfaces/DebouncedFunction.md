@@ -6,7 +6,7 @@
 
 # Interface: DebouncedFunction()\<T\>
 
-Defined in: types/debounce.ts:15
+Defined in: types/function.ts:15
 
 防抖处理后的函数接口
 
@@ -14,13 +14,13 @@ Defined in: types/debounce.ts:15
 
 ### T
 
-`T` *extends* (...`args`) => `unknown`
+`T` *extends* `unknown`[]
 
 函数类型
 
 > **DebouncedFunction**(...`args`): `void`
 
-Defined in: types/debounce.ts:16
+Defined in: types/function.ts:16
 
 防抖处理后的函数接口
 
@@ -28,7 +28,7 @@ Defined in: types/debounce.ts:16
 
 ### args
 
-...`Parameters`\<`T`\>
+...`T`
 
 ## Returns
 
@@ -40,7 +40,7 @@ Defined in: types/debounce.ts:16
 
 > **cancel**(): `void`
 
-Defined in: types/debounce.ts:20
+Defined in: types/function.ts:20
 
 取消当前正在执行的函数调用
 

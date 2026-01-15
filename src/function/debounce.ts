@@ -1,18 +1,17 @@
-import { DebounceOptions, DebouncedFunction } from "@/types/debounce";
+import { DebounceOptions, DebouncedFunction } from "@/types/function";
 
 /**
  * 将函数进行防抖处理
  * @param fn - 需要防抖处理的函数
+ * @param delay - 防抖延迟时间，默认100ms
  * @param options - 配置选项
- * @param options.delay - 防抖延迟时间，默认500ms
  * @returns 防抖处理后的函数，带有cancel方法
  */
 function debounce<T extends unknown[]>(
   fn: (...args: T) => void,
-  options: DebounceOptions = {},
+  delay: number = 100,
+  _options: DebounceOptions = {},
 ): DebouncedFunction<T> {
-  const { delay = 500 } = options;
-
   let timer: NodeJS.Timeout | null = null;
 
   const debounced = function (this: ThisParameterType<T>, ...args: T) {

@@ -11,7 +11,7 @@ describe("debounce", () => {
 
   it("应在延迟后执行函数", () => {
     const mockFn = jest.fn();
-    const debouncedFn = debounce(mockFn, { delay: 100 });
+    const debouncedFn = debounce(mockFn, 100);
 
     debouncedFn();
 
@@ -27,7 +27,7 @@ describe("debounce", () => {
 
   it("应在多次调用时只执行最后一次", () => {
     const mockFn = jest.fn();
-    const debouncedFn = debounce(mockFn, { delay: 100 });
+    const debouncedFn = debounce(mockFn, 100);
 
     // 快速连续调用3次
     debouncedFn();
@@ -43,7 +43,7 @@ describe("debounce", () => {
 
   it("应能正确传递参数", () => {
     const mockFn = jest.fn();
-    const debouncedFn = debounce(mockFn, { delay: 100 });
+    const debouncedFn = debounce(mockFn, 100);
 
     // 带参数调用
     debouncedFn("param1", 123, { key: "value" });
@@ -65,7 +65,7 @@ describe("debounce", () => {
       expect(this.value).toBe(42);
     });
 
-    const debouncedFn = debounce(mockFn, { delay: 100 });
+    const debouncedFn = debounce(mockFn, 100);
 
     // 使用 call 绑定上下文
     debouncedFn.call(context);
@@ -79,7 +79,7 @@ describe("debounce", () => {
 
   it("应支持取消功能", () => {
     const mockFn = jest.fn();
-    const debouncedFn = debounce(mockFn, { delay: 100 });
+    const debouncedFn = debounce(mockFn, 100);
 
     debouncedFn();
 
@@ -93,24 +93,24 @@ describe("debounce", () => {
     expect(mockFn).not.toHaveBeenCalled();
   });
 
-  it("应使用默认延迟时间（500ms）", () => {
+  it("应使用默认延迟时间（100ms）", () => {
     const mockFn = jest.fn();
     const debouncedFn = debounce(mockFn); // 未指定延迟
 
     debouncedFn();
 
-    // 推进499ms，函数不应被调用
-    jest.advanceTimersByTime(499);
+    // 推进99ms，函数不应被调用
+    jest.advanceTimersByTime(99);
     expect(mockFn).not.toHaveBeenCalled();
 
-    // 再推进1ms，达到500ms
+    // 再推进1ms，达到100ms
     jest.advanceTimersByTime(1);
     expect(mockFn).toHaveBeenCalledTimes(1);
   });
 
   it("应在取消后重新调用时正常执行", () => {
     const mockFn = jest.fn();
-    const debouncedFn = debounce(mockFn, { delay: 100 });
+    const debouncedFn = debounce(mockFn, 100);
 
     // 第一次调用后取消
     debouncedFn();

@@ -11,6 +11,7 @@
 - [DateFormatOptions](interfaces/DateFormatOptions.md)
 - [DebounceOptions](interfaces/DebounceOptions.md)
 - [DebouncedFunction](interfaces/DebouncedFunction.md)
+- [ToFormattedNumberOptions](interfaces/ToFormattedNumberOptions.md)
 
 ## Type Aliases
 
@@ -25,3 +26,4 @@
 
 - [formatDate](functions/formatDate.md)
 - [debounce](functions/debounce.md)
+- [toFormattedNumber](functions/toFormattedNumber.md)

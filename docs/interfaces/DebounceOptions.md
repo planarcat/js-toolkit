@@ -6,7 +6,7 @@
 
 # Interface: DebounceOptions
 
-Defined in: types/debounce.ts:4
+Defined in: types/function.ts:4
 
 ## Properties
 
@@ -14,6 +14,6 @@ Defined in: types/debounce.ts:4
 
 > `optional` **delay**: `number`
 
-Defined in: types/debounce.ts:8
+Defined in: types/function.ts:8
 
 防抖延迟时间，默认500ms

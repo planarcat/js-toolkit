@@ -8,7 +8,7 @@
 
 > **formatDate**(`input`, `formatStr`, `options`): `string`
 
-Defined in: [date/formatDate.ts:93](https://github.com/planarcat/js-toolkit/blob/7b303110f0abe082c8d52adf792b1a236c7b15a7/src/date/formatDate.ts#L93)
+Defined in: [date/formatDate.ts:101](https://github.com/planarcat/js-toolkit/blob/81fd1105ef677c73b93b4ee2f6c7b089ac7edae9/src/date/formatDate.ts#L101)
 
 格式化日期对象
 
@@ -22,7 +22,7 @@ Defined in: [date/formatDate.ts:93](https://github.com/planarcat/js-toolkit/blob
 
 ### formatStr
 
-`string` = `'YYYY-MM-DD HH:mm:ss'`
+`string` = `"YYYY-MM-DD HH:mm:ss"`
 
 格式化字符串，支持 YYYY-MM-DD HH:mm:ss 等标记，默认为 'YYYY-MM-DD HH:mm:ss'
 
