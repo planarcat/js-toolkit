@@ -110,7 +110,7 @@ console.log(toFormattedNumberString(1234.5678, { prefix: '$', suffix: ' USD' }))
 // 输出: "$1234.5678 USD"
 
 // 本地化格式
-console.log(toFormattedNumberString(1234567.89, { useLocalizedFormat: true }));
+console.log(toFormattedNumberString(1234567.89, { localized: true }));
 // 输出: "1,234,567.89"
 
 // 自定义NaN和0显示
@@ -122,7 +122,7 @@ console.log(toFormattedNumberString(0, { zeroValue: '-' }));
 // 预处理函数
 console.log(
     toFormattedNumberString(0.1234, {
-        preProcessor: num => num * 100,
+        preProcessor: (original, num) => num * 100,
         suffix: '%',
     })
 );
@@ -131,7 +131,7 @@ console.log(
 // 函数类型前缀
 console.log(
     toFormattedNumberString(123.456, {
-        prefix: num => `$${Math.floor(num)}`,
+        prefix: (original, num, formatted) => `$${Math.floor(num)}`,
     })
 );
 // 输出: "$123123.456"
@@ -139,7 +139,7 @@ console.log(
 // 函数类型后缀
 console.log(
     toFormattedNumberString(123.456, {
-        suffix: num => `/${num.toFixed(0)}`,
+        suffix: (original, num, formatted) => `/${num.toFixed(0)}`,
     })
 );
 // 输出: "123.456/123"
@@ -247,6 +247,25 @@ npm run test:coverage
 - **planarcat** - [GitHub](https://github.com/planarcat)
 
 ## 更新日志
+
+### v1.5.3
+
+- ✨ 增强了 `toFormattedNumberString` 函数，为 `preProcessor`、`prefix` 和 `suffix` 函数更新了参数顺序
+- ✨ `preProcessor` 现在接收两个参数：原始对象和转化后的 number
+- ✨ `prefix` 如果是函数，现在接收三个参数：原始对象、转化后的 number、格式化后的字符串
+- ✨ `suffix` 如果是函数，现在接收三个参数：原始对象、转化后的 number、格式化后的字符串
+- ✨ 增强了测试用例，验证新功能
+- ✨ 更新了文档，明确说明每个函数参数的用途
+
+### v1.5.2
+
+- ✨ 更新了函数返回值类型说明，明确区分数组和非数组输入的返回值
+- ✨ 生成了最新的 API 文档
+
+### v1.5.1
+
+- ✨ 更新了 README 文档，修复了参数名称
+- ✨ 生成了最新的 API 文档
 
 ### v1.5.0
 

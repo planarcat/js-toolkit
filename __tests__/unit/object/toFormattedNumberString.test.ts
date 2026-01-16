@@ -41,13 +41,22 @@ describe("toFormattedNumberString 函数测试", () => {
     it("应该正确提取字符串中的数字并转换为字符串", () => {
       expect(toFormattedNumberString("123.456abc")).toBe("123.456");
       expect(toFormattedNumberString("abc123.456def")).toBe("123.456");
+      expect(toFormattedNumberString("abc123.12aa456def")).toBe("123.12");
       expect(toFormattedNumberString("-123.456")).toBe("-123.456");
+      expect(toFormattedNumberString("+123.456")).toBe("123.456");
+      expect(toFormattedNumberString(" 123.456 ")).toBe("123.456");
+    });
+
+    it("应该正确处理科学计数法字符串", () => {
+      expect(toFormattedNumberString("1.23e3")).toBe("1230");
+      expect(toFormattedNumberString("1.23e-3")).toBe("0.00123");
     });
 
     it("应该对无数字的字符串返回指定的0显示", () => {
       // 无数字字符串默认返回'0'
       expect(toFormattedNumberString("abc")).toBe("0");
       expect(toFormattedNumberString("")).toBe("0");
+      expect(toFormattedNumberString("+-.")).toBe("0");
       // 自定义zeroValue选项
       expect(toFormattedNumberString("abc", { zeroValue: "" })).toBe("");
       expect(toFormattedNumberString("", { zeroValue: "123" })).toBe("123");
@@ -103,7 +112,7 @@ describe("toFormattedNumberString 函数测试", () => {
       // 注意：本地化格式可能因环境而异，这里使用基本测试
       const num = 1234567.89;
       const localizedStr = num.toLocaleString();
-      expect(toFormattedNumberString(num, { useLocalizedFormat: true })).toBe(
+      expect(toFormattedNumberString(num, { localized: true })).toBe(
         localizedStr,
       );
     });
@@ -116,7 +125,7 @@ describe("toFormattedNumberString 函数测试", () => {
       });
       expect(
         toFormattedNumberString(num, {
-          useLocalizedFormat: true,
+          localized: true,
           decimalPlaces: 2,
         }),
       ).toBe(localizedStr);
@@ -127,14 +136,14 @@ describe("toFormattedNumberString 函数测试", () => {
     it("应该正确应用预处理函数", () => {
       expect(
         toFormattedNumberString(0.1234, {
-          preProcessor: (num) => num * 100,
+          preProcessor: (original, num) => num * 100,
           suffix: "%",
         }),
       ).toBe("12.34%");
 
       expect(
         toFormattedNumberString(100, {
-          preProcessor: (num) => num / 100,
+          preProcessor: (original, num) => num / 100,
           decimalPlaces: 4,
         }),
       ).toBe("1.0000");
@@ -163,7 +172,7 @@ describe("toFormattedNumberString 函数测试", () => {
     it("应该在预处理函数后添加前缀后缀", () => {
       expect(
         toFormattedNumberString(0.1234, {
-          preProcessor: (num) => num * 100,
+          preProcessor: (original, num) => num * 100,
           prefix: "~",
           suffix: "%",
         }),
@@ -213,12 +222,12 @@ describe("toFormattedNumberString 函数测试", () => {
     it("应该支持函数类型的前缀", () => {
       expect(
         toFormattedNumberString(123.456, {
-          prefix: (num) => `$${Math.floor(num)}`,
+          prefix: (original, num, _formatted) => `$${Math.floor(num)}`,
         }),
       ).toBe("$123123.456");
       expect(
         toFormattedNumberString(0, {
-          prefix: (num) => (num === 0 ? "免费" : "$"),
+          prefix: (original, num, _formatted) => (num === 0 ? "免费" : "$"),
         }),
       ).toBe("免费0");
     });
@@ -226,12 +235,12 @@ describe("toFormattedNumberString 函数测试", () => {
     it("应该支持函数类型的后缀", () => {
       expect(
         toFormattedNumberString(123.456, {
-          suffix: (num) => `/${num.toFixed(0)}`,
+          suffix: (original, num, _formatted) => `/${num.toFixed(0)}`,
         }),
       ).toBe("123.456/123");
       expect(
         toFormattedNumberString(0, {
-          suffix: (num) => (num === 0 ? " (免费)" : ""),
+          suffix: (original, num, _formatted) => (num === 0 ? " (免费)" : ""),
         }),
       ).toBe("0 (免费)");
     });
@@ -239,8 +248,8 @@ describe("toFormattedNumberString 函数测试", () => {
     it("应该同时支持函数类型的前缀和后缀", () => {
       expect(
         toFormattedNumberString(123.456, {
-          prefix: (num) => `金额: $${Math.round(num)}`,
-          suffix: (num) => ` (精确值: ${num})`,
+          prefix: (original, num, _formatted) => `金额: $${Math.round(num)}`,
+          suffix: (original, num, _formatted) => ` (精确值: ${num})`,
         }),
       ).toBe("金额: $123123.456 (精确值: 123.456)");
     });
@@ -248,11 +257,35 @@ describe("toFormattedNumberString 函数测试", () => {
     it("应该在预处理函数后应用函数类型的前缀后缀", () => {
       expect(
         toFormattedNumberString(0.1234, {
-          preProcessor: (num) => num * 100,
-          prefix: (num) => `~${num}% `,
-          suffix: (num) => ` (${num.toFixed(2)}%)`,
+          preProcessor: (original, num) => num * 100,
+          prefix: (original, num, _formatted) => `~${num}% `,
+          suffix: (original, num, _formatted) => ` (${num.toFixed(2)}%)`,
         }),
       ).toBe("~12.34% 12.34 (12.34%)");
+    });
+
+    it("应该为 preProcessor 和后缀函数提供原始对象", () => {
+      // 测试 preProcessor 接收原始对象
+      expect(
+        toFormattedNumberString("123.456abc", {
+          preProcessor: (original, num) => {
+            // 检查原始对象是否正确传递
+            expect(typeof original).toBe("string");
+            return num;
+          },
+        }),
+      ).toBe("123.456");
+
+      // 测试后缀函数接收原始对象
+      expect(
+        toFormattedNumberString(123.456, {
+          suffix: (original, num, _formatted) => {
+            // 检查原始对象是否正确传递
+            expect(original).toBe(123.456);
+            return `/${num.toFixed(0)}`;
+          },
+        }),
+      ).toBe("123.456/123");
     });
   });
 

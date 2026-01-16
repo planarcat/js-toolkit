@@ -10,7 +10,7 @@
 
 > **toFormattedNumber**(`object`, `options?`): `number`[]
 
-Defined in: [object/toFormattedNumber.ts:101](https://github.com/planarcat/js-toolkit/blob/2d287284a8d9b5d0c489f31752314a5836431ab4/src/object/toFormattedNumber.ts#L101)
+Defined in: [object/toFormattedNumber.ts:101](https://github.com/planarcat/js-toolkit/blob/dda8049c3011f2a86b8b804085db359b3ecde026/src/object/toFormattedNumber.ts#L101)
 
 将任意对象转化为数字，然后根据格式化参数对转化后的数字进行格式化
 
@@ -37,8 +37,8 @@ Defined in: [object/toFormattedNumber.ts:101](https://github.com/planarcat/js-to
 `number`[]
 
 格式化后的数字或数字数组
-         - 如果输入是单个值，返回格式化后的数字
-         - 如果输入是数组，返回格式化后的数字数组
+         - 当传入的 object 为非数组时，返回 number
+         - 当传入的 object 为数组时，返回 number[]
          - 支持深层数组递归处理
 
 ### Example
@@ -82,9 +82,9 @@ toFormattedNumber('abc', { nanValue: -1 }); // -1
 
 ## Call Signature
 
-> **toFormattedNumber**(`object`, `options?`): `number` \| `number`[]
+> **toFormattedNumber**(`object`, `options?`): `number`
 
-Defined in: [object/toFormattedNumber.ts:106](https://github.com/planarcat/js-toolkit/blob/2d287284a8d9b5d0c489f31752314a5836431ab4/src/object/toFormattedNumber.ts#L106)
+Defined in: [object/toFormattedNumber.ts:103](https://github.com/planarcat/js-toolkit/blob/dda8049c3011f2a86b8b804085db359b3ecde026/src/object/toFormattedNumber.ts#L103)
 
 将任意对象转化为数字，然后根据格式化参数对转化后的数字进行格式化
 
@@ -108,11 +108,11 @@ Defined in: [object/toFormattedNumber.ts:106](https://github.com/planarcat/js-to
 
 ### Returns
 
-`number` \| `number`[]
+`number`
 
 格式化后的数字或数字数组
-         - 如果输入是单个值，返回格式化后的数字
-         - 如果输入是数组，返回格式化后的数字数组
+         - 当传入的 object 为非数组时，返回 number
+         - 当传入的 object 为数组时，返回 number[]
          - 支持深层数组递归处理
 
 ### Example

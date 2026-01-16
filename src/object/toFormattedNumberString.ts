@@ -12,16 +12,17 @@
  *                               number: 保留指定小数位，不够时补0
  * @param options.nanValue - 当值为NaN时的显示，默认'NaN'
  * @param options.zeroValue - 当值为0时的显示，默认'0'
- * @param options.useLocalizedFormat - 是否使用本地化格式，默认false
+ * @param options.localized - 是否使用本地化格式，默认false
  * @param options.preProcessor - 预处理函数，在数字转换后、字符串格式化前应用
- * @param options.prefix - 前缀，可以是字符串或函数，默认''
- *                          如果是函数，会接收格式化前的数字作为参数，返回字符串作为前缀
- * @param options.suffix - 后缀，可以是字符串或函数，默认''
- *                          如果是函数，会接收格式化前的数字作为参数，返回字符串作为后缀
+ *                               接收两个参数：原始对象和转化后的数字
+ * @param options.prefix - 前缀，字符串或函数
+ *                          如果是函数，会接收三个参数：原始对象、转化后的数字、格式化后的字符串，返回字符串作为前缀
+ * @param options.suffix - 后缀，字符串或函数
+ *                          如果是函数，会接收三个参数：原始对象、转化后的数字、格式化后的字符串，返回字符串作为后缀
  *
  * @returns 格式化后的数字字符串或字符串数组
- *          - 如果输入是单个值，返回格式化后的字符串
- *          - 如果输入是数组，返回格式化后的字符串数组
+ *          - 当传入的 object 为非数组时，返回 string
+ *          - 当传入的 object 为数组时，返回 string[]
  *          - 支持深层数组递归处理
  *
  * @example
@@ -36,6 +37,8 @@
  * toFormattedNumberString(123.456, { prefix: '$', suffix: ' USD' }); // "$123.456 USD"
  *
  * // 本地化格式
+ * toFormattedNumberString(1234567.89, { localized: true }); // "1,234,567.89"
+ * // 兼容旧的useLocalizedFormat参数
  * toFormattedNumberString(1234567.89, { useLocalizedFormat: true }); // "1,234,567.89"
  *
  * // 自定义NaN和0显示
@@ -44,18 +47,18 @@
  *
  * // 预处理函数
  * toFormattedNumberString(0.1234, {
- *   preProcessor: (num) => num * 100,
+ *   preProcessor: (original, num) => num * 100,
  *   suffix: '%'
  * }); // "12.34%"
  *
  * // 函数类型前缀
  * toFormattedNumberString(123.456, {
- *   prefix: (num) => `$${Math.floor(num)}`
+ *   prefix: (original, num, formatted) => `$${Math.floor(num)}`
  * }); // "$123123.456"
  *
  * // 函数类型后缀
  * toFormattedNumberString(123.456, {
- *   suffix: (num) => `/${num.toFixed(0)}`
+ *   suffix: (original, num, formatted) => `/${num.toFixed(0)}`
  * }); // "123.456/123"
  *
  * // 处理数组
@@ -77,7 +80,7 @@ function toFormattedNumberString(
 function toFormattedNumberString(
   object: unknown,
   options?: import("../types/object").ToFormattedNumberStringOptions,
-): string | string[];
+): string;
 // 主函数实现
 function toFormattedNumberString(
   object: unknown,
@@ -88,57 +91,70 @@ function toFormattedNumberString(
     decimalPlaces = true,
     nanValue = "NaN",
     zeroValue = "0",
-    useLocalizedFormat = false,
+    localized,
     preProcessor,
     prefix = "",
     suffix = "",
   } = options || {};
 
   /**
-   * 处理前缀或后缀，可以是字符串或函数
-   * @param prefixOrSuffix - 前缀或后缀，可以是字符串或函数
-   * @param num - 要传递给函数的数字
-   * @returns 处理后的前缀或后缀字符串
-   */
-  const processPrefixSuffix = (
-    prefixOrSuffix: string | ((value: number) => string),
-    num: number,
-  ): string => {
-    if (typeof prefixOrSuffix === "function") {
-      return prefixOrSuffix(num);
-    }
-    return prefixOrSuffix;
-  };
-
-  /**
    * 添加前缀和后缀
-   * @param str - 要添加前缀后缀的字符串
-   * @param num - 要传递给前缀后缀函数的数字
+   * @param prefix - 前缀
+   * @param suffix - 后缀
+   * @param formatted - 格式化后的字符串
+   * @param converted - 转化后的数字
+   * @param original - 原始对象
    * @returns 添加了前缀后缀的字符串
    */
-  const addPrefixSuffix = (str: string, num: number): string => {
-    const processedPrefix = processPrefixSuffix(prefix, num);
-    const processedSuffix = processPrefixSuffix(suffix, num);
-    return `${processedPrefix}${str}${processedSuffix}`;
+  const addPrefixSuffix = (
+    prefix:
+      | string
+      | ((original: unknown, converted: number, formatted: string) => string),
+    suffix:
+      | string
+      | ((original: unknown, converted: number, formatted: string) => string),
+    formatted: string,
+    converted: number,
+    original: unknown,
+  ): string => {
+    let processedPrefix: string;
+    if (typeof prefix === "function") {
+      processedPrefix = prefix(original, converted, formatted);
+    } else {
+      processedPrefix = prefix;
+    }
+    let processedSuffix: string;
+    if (typeof suffix === "function") {
+      processedSuffix = suffix(original, converted, formatted);
+    } else {
+      processedSuffix = suffix;
+    }
+    return `${processedPrefix}${formatted}${processedSuffix}`;
   };
 
   /**
    * 将单个数字转换为格式化字符串
-   * @param num - 要转换的数字
+   * @param converted - 转化后的数字
+   * @param original - 原始对象
    * @returns 格式化后的字符串
    */
-  const convertNumberToString = (num: number): string => {
+  const convertNumberToString = (
+    converted: number,
+    original: unknown,
+  ): string => {
     // 处理0情况
-    if (num === 0) {
-      return addPrefixSuffix(zeroValue, num);
+    if (converted === 0) {
+      return addPrefixSuffix(prefix, suffix, zeroValue, converted, original);
     }
 
     // 应用预处理函数
-    const processedNum = preProcessor ? preProcessor(num) : num;
+    const processedNum = preProcessor
+      ? preProcessor(original, converted)
+      : converted;
 
     // 格式化数字为字符串
     let strNum: string;
-    if (useLocalizedFormat) {
+    if (localized) {
       // 使用本地化格式
       if (decimalPlaces === true) {
         // 保留所有小数位
@@ -162,7 +178,7 @@ function toFormattedNumberString(
     }
 
     // 添加前缀和后缀
-    return addPrefixSuffix(strNum, processedNum);
+    return addPrefixSuffix(prefix, suffix, strNum, processedNum, original);
   };
 
   /**
@@ -177,17 +193,21 @@ function toFormattedNumberString(
   /**
    * 递归处理值，转换为格式化字符串
    * @param value - 要处理的值
+   * @param original - 原始对象或数组元素
    * @returns 格式化后的字符串或字符串数组
    */
-  const processValue = (value: unknown): string | string[] => {
+  const processValue = (
+    value: unknown,
+    original: unknown = object,
+  ): string | string[] => {
     if (Array.isArray(value)) {
       // 递归处理数组
-      return value.map(processValue) as string[];
+      return value.map((item, _index) => processValue(item, item)) as string[];
     } else {
       // 检查是否为无数字的字符串
       if (typeof value === "string" && !hasNumbers(value)) {
         // 无数字的字符串返回0
-        return addPrefixSuffix(zeroValue, 0);
+        return addPrefixSuffix(prefix, suffix, zeroValue, 0, original);
       }
 
       // 对于其他类型，首先将输入转换为数字
@@ -200,11 +220,11 @@ function toFormattedNumberString(
       // 检查是否为NaN
       if (isNaN(num)) {
         // 其他NaN情况，使用nanValue
-        return addPrefixSuffix(nanValue, num);
+        return addPrefixSuffix(prefix, suffix, nanValue, num, original);
       }
 
       // 正常数字转换
-      return convertNumberToString(num);
+      return convertNumberToString(num, original);
     }
   };
 

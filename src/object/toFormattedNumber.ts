@@ -55,8 +55,8 @@ function convertToNumber(value: unknown): number {
  * @param options.nanValue - 当值为NaN时的显示，默认NaN
  *
  * @returns 格式化后的数字或数字数组
- *          - 如果输入是单个值，返回格式化后的数字
- *          - 如果输入是数组，返回格式化后的数字数组
+ *          - 当传入的 object 为非数组时，返回 number
+ *          - 当传入的 object 为数组时，返回 number[]
  *          - 支持深层数组递归处理
  *
  * @example
@@ -106,7 +106,7 @@ function toFormattedNumber(
 function toFormattedNumber(
   object: unknown,
   options?: import("../types/object").ToFormattedNumberOptions,
-): number | number[];
+): number;
 // 主函数实现
 function toFormattedNumber(
   object: unknown,

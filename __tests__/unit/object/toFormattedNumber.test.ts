@@ -24,6 +24,7 @@ describe("toFormattedNumber 函数测试", () => {
     it("应该正确提取字符串中的数字", () => {
       expect(toFormattedNumber("123.456abc")).toBe(123.456);
       expect(toFormattedNumber("abc123.456def")).toBe(123.456);
+      expect(toFormattedNumber("abc123.12aa456def")).toBe(123.12);
       expect(toFormattedNumber("-123.456")).toBe(-123.456);
       expect(toFormattedNumber("+123.456")).toBe(123.456);
       expect(toFormattedNumber(" 123.456 ")).toBe(123.456);
@@ -32,6 +33,7 @@ describe("toFormattedNumber 函数测试", () => {
     it("应该对无数字的字符串返回0", () => {
       expect(toFormattedNumber("abc")).toBe(0);
       expect(toFormattedNumber("")).toBe(0);
+      expect(toFormattedNumber("+-.")).toBe(0);
     });
 
     it("应该正确处理科学计数法字符串", () => {

@@ -6,7 +6,7 @@
 
 # Interface: DebouncedFunction()\<T\>
 
-Defined in: [types/function.ts:15](https://github.com/planarcat/js-toolkit/blob/2d287284a8d9b5d0c489f31752314a5836431ab4/src/types/function.ts#L15)
+Defined in: [types/function.ts:15](https://github.com/planarcat/js-toolkit/blob/dda8049c3011f2a86b8b804085db359b3ecde026/src/types/function.ts#L15)
 
 防抖处理后的函数接口
 
@@ -20,7 +20,7 @@ Defined in: [types/function.ts:15](https://github.com/planarcat/js-toolkit/blob/
 
 > **DebouncedFunction**(...`args`): `void`
 
-Defined in: [types/function.ts:16](https://github.com/planarcat/js-toolkit/blob/2d287284a8d9b5d0c489f31752314a5836431ab4/src/types/function.ts#L16)
+Defined in: [types/function.ts:16](https://github.com/planarcat/js-toolkit/blob/dda8049c3011f2a86b8b804085db359b3ecde026/src/types/function.ts#L16)
 
 防抖处理后的函数接口
 
@@ -40,7 +40,7 @@ Defined in: [types/function.ts:16](https://github.com/planarcat/js-toolkit/blob/
 
 > **cancel**(): `void`
 
-Defined in: [types/function.ts:20](https://github.com/planarcat/js-toolkit/blob/2d287284a8d9b5d0c489f31752314a5836431ab4/src/types/function.ts#L20)
+Defined in: [types/function.ts:20](https://github.com/planarcat/js-toolkit/blob/dda8049c3011f2a86b8b804085db359b3ecde026/src/types/function.ts#L20)
 
 取消当前正在执行的函数调用
 
