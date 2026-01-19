@@ -1,4 +1,4 @@
-import { DateInput, DateFormatOptions } from "../types/date";
+import { DateFormatOptions, DateInput } from "../types/date";
 import { DEFAULT_DATE_FORMAT_OPTIONS, WEEKDAY_MAP } from "../utils/constants";
 
 /**
@@ -63,10 +63,7 @@ function getLocalizedWeekday(
  *
  * @param input - 要格式化的日期输入，可以是 Date 对象、时间戳、日期字符串
  * @param formatStr - 格式化字符串，支持 YYYY-MM-DD HH:mm:ss 等标记，默认为 'YYYY-MM-DD HH:mm:ss'
- * @param options - 格式化选项
- * @param options.timeZone - 时区设置，默认为 'local'
- * @param options.locale - 语言环境，默认为 'zh-CN'
- * @param options.customFormatters - 自定义格式化处理器
+ * @param options - 格式化选项，具体参数说明见类型声明
  * @returns 格式化后的日期字符串
  *
  * @example
@@ -80,23 +77,53 @@ function getLocalizedWeekday(
  * // 自定义格式
  * formatDate('2023-12-25', 'YYYY年MM月DD日');
  * // 返回: "2023年12月25日"
- *
- * // 使用 dd 标记显示周几
- * formatDate(new Date(), 'dd HH:mm');
- * // 返回: "周一 14:30"
- *
- * // 英文环境显示周几
- * formatDate(new Date(), 'dd HH:mm', { locale: 'en-US' });
- * // 返回: "Monday 14:30"
- *
- * // 自定义格式化器
- * formatDate(new Date(), '第Q季度', {
- *   customFormatters: {
- *     '第Q季度': (date) => `第${Math.floor((date.getMonth() + 3) / 3)}季度`
- *   }
- * });
- * // 返回: "第4季度"
  * ```
+ *
+ * @remarks
+ * ## 支持的格式化标记
+ *
+ * ### 年份
+ * - `YYYY`: 4位年份 (2024)
+ * - `YY`: 2位年份 (24)
+ *
+ * ### 月份
+ * - `MMMM`: 完整月份名称 (January / 一月)
+ * - `MMM`: 月份缩写 (Jan / 1月)
+ * - `MM`: 2位月份 (01-12)
+ * - `M`: 1-2位月份 (1-12)
+ *
+ * ### 日期
+ * - `DDD`: 一年中的第几天 (001-366)
+ * - `DD`: 2位日期 (01-31)
+ * - `D`: 1-2位日期 (1-31)
+ * - `Do`: 带序数词的日期 (1st, 2nd, 3rd, 4th / 1日, 2日, 3日)
+ *
+ * ### 星期
+ * - `dddd`: 完整星期名称 (Monday / 星期一)
+ * - `ddd`: 星期缩写 (Mon / 周一)
+ * - `d`: 星期数字 (0-6, 0=周日)
+ *
+ * ### 时间
+ * - `HH`: 24小时制，2位 (00-23)
+ * - `H`: 24小时制，1-2位 (0-23)
+ * - `hh`: 12小时制，2位 (01-12)
+ * - `h`: 12小时制，1-2位 (1-12)
+ * - `mm`: 2位分钟 (00-59)
+ * - `m`: 1-2位分钟 (0-59)
+ * - `ss`: 2位秒 (00-59)
+ * - `s`: 1-2位秒 (0-59)
+ * - `SSS`: 3位毫秒 (000-999)
+ * - `S`: 毫秒 (0-999)
+ *
+ * ### 其他
+ * - `A`: 大写AM/PM
+ * - `a`: 小写am/pm
+ * - `Q`: 季度 (1-4)
+ * - `WW`: 2位周数 (01-53)
+ * - `W`: 1-2位周数 (1-53)
+ * - `X`: Unix时间戳 (秒)
+ * - `x`: Unix时间戳 (毫秒)
+ * - `timestamp`: Unix时间戳 (毫秒，与x相同)
  */
 function formatDate(
   input: DateInput,
@@ -117,6 +144,41 @@ function formatDate(
   const weekday = date.getDay();
   const quarter = Math.floor((date.getMonth() + 3) / 3);
   const weekNumber = getWeekNumber(date);
+
+  // 一年中的第几天
+  const firstDayOfYear = new Date(year, 0, 1);
+  const dayOfYear = Math.ceil(
+    (date.getTime() - firstDayOfYear.getTime()) / (1000 * 60 * 60 * 24),
+  );
+
+  // 序数词后缀
+  const getOrdinalSuffix = (num: number): string => {
+    const suffixes = ["th", "st", "nd", "rd"];
+    const v = num % 100;
+    return suffixes[(v - 20) % 10] || suffixes[v] || suffixes[0];
+  };
+
+  // Unix 时间戳
+  const timestampSeconds = Math.floor(date.getTime() / 1000);
+  const timestampMilliseconds = date.getTime();
+
+  // 月份名称和缩写
+  const getMonthName = (
+    date: Date,
+    locale: string,
+    full: boolean = false,
+  ): string => {
+    return date.toLocaleString(locale, { month: full ? "long" : "short" });
+  };
+
+  // 星期名称和缩写
+  const getWeekdayName = (
+    date: Date,
+    locale: string,
+    full: boolean = false,
+  ): string => {
+    return date.toLocaleString(locale, { weekday: full ? "long" : "short" });
+  };
 
   // 12小时制
   const hours12 = hours % 12 || 12;
@@ -146,10 +208,22 @@ function formatDate(
   }
 
   // 3. 替换多字符标记（2-4个字符）
+  // 注意：长标记需要先于短标记处理，避免被部分匹配
   const multiCharReplacements: Record<string, string> = {
     YYYY: year.toString().padStart(4, "0"),
     YY: year.toString().slice(-2),
+    MMMM: getMonthName(
+      date,
+      mergedOptions.locale || DEFAULT_DATE_FORMAT_OPTIONS.locale,
+      true,
+    ),
+    MMM: getMonthName(
+      date,
+      mergedOptions.locale || DEFAULT_DATE_FORMAT_OPTIONS.locale,
+      false,
+    ),
     MM: month.toString().padStart(2, "0"),
+    DDD: dayOfYear.toString().padStart(3, "0"),
     DD: day.toString().padStart(2, "0"),
     HH: hours.toString().padStart(2, "0"),
     hh: hours12.toString().padStart(2, "0"),
@@ -157,7 +231,20 @@ function formatDate(
     ss: seconds.toString().padStart(2, "0"),
     SSS: milliseconds.toString().padStart(3, "0"),
     WW: weekNumber.toString().padStart(2, "0"),
+    dddd: getWeekdayName(
+      date,
+      mergedOptions.locale || DEFAULT_DATE_FORMAT_OPTIONS.locale,
+      true,
+    ),
+    ddd: getWeekdayName(
+      date,
+      mergedOptions.locale || DEFAULT_DATE_FORMAT_OPTIONS.locale,
+      false,
+    ),
     dd: getLocalizedWeekday(weekday, mergedOptions),
+    Do: `${day}${getOrdinalSuffix(day)}`,
+    X: timestampSeconds.toString(),
+    x: timestampMilliseconds.toString(),
   };
 
   Object.entries(multiCharReplacements).forEach(([token, value]) => {
@@ -175,6 +262,7 @@ function formatDate(
     h: hours12.toString(),
     m: minutes.toString(),
     s: seconds.toString(),
+    S: milliseconds.toString(),
     W: weekNumber.toString(),
     d: weekday.toString(),
     Q: quarter.toString(),

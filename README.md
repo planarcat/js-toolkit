@@ -57,7 +57,7 @@ const debouncedFn = debounce(
     () => {
         console.log('函数执行了！');
     },
-    { delay: 500 }
+    { delay: 500 },
 );
 
 // 多次调用，只会执行最后一次
@@ -93,7 +93,7 @@ console.log(
     toFormattedNumber([
         [1, '1.23'],
         ['45.67', [89.01, 'abc']],
-    ])
+    ]),
 );
 // 输出: [[1, 1.23], [45.67, [89.01, NaN]]]
 
@@ -124,7 +124,7 @@ console.log(
     toFormattedNumberString(0.1234, {
         preProcessor: (original, num) => num * 100,
         suffix: '%',
-    })
+    }),
 );
 // 输出: "12.34%"
 
@@ -132,7 +132,7 @@ console.log(
 console.log(
     toFormattedNumberString(123.456, {
         prefix: (original, num, formatted) => `$${Math.floor(num)}`,
-    })
+    }),
 );
 // 输出: "$123123.456"
 
@@ -140,7 +140,7 @@ console.log(
 console.log(
     toFormattedNumberString(123.456, {
         suffix: (original, num, formatted) => `/${num.toFixed(0)}`,
-    })
+    }),
 );
 // 输出: "123.456/123"
 
@@ -247,6 +247,30 @@ npm run test:coverage
 - **planarcat** - [GitHub](https://github.com/planarcat)
 
 ## 更新日志
+
+### v1.6.0
+
+- ✨ 增强了日期格式化功能，支持更多格式化标记
+- ✨ 新增月份相关标记：`MMMM`（完整月份名称）、`MMM`（月份缩写）
+- ✨ 新增日期相关标记：`DDD`（一年中的第几天）、˜`Do`（带序数词的日期）
+- ✨ 新增时间相关标记：`S`（单个毫秒）
+- ✨ 新增星期相关标记：`dddd`（完整星期名称）、`ddd`（星期缩写）
+- ✨ 新增时间戳相关标记：`X`（Unix时间戳秒）、`x`（Unix时间戳毫秒）
+- ✨ 优化了文档结构，添加了完整的格式化标记参考
+- ✨ 完善了测试用例，覆盖所有新功能
+
+### v1.5.6
+
+- ✨ 优化了 `toFormattedNumberString` 函数的内部实现，将内部函数提取到外部
+- ✨ 统一了变量命名规范，根据转化进度命名：converted、preProcessed、formatted
+- ✨ 新增测试用例，验证预处理函数和后缀函数的组合使用
+- ✨ 提高了代码的可读性和可维护性
+
+### v1.5.5
+
+- ✨ 修复了测试文件中的未使用变量警告
+- ✨ 优化了代码注释，删除了重复的不必要说明
+- ✨ 提高了代码的简洁性和可维护性
 
 ### v1.5.3
 

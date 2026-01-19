@@ -132,6 +132,55 @@ describe("formatDate", () => {
     });
   });
 
+  describe("新格式化标记", () => {
+    it("应正确显示完整月份名称", () => {
+      expect(formatDate(testDate, "MMMM", { locale: "en-US" })).toBe(
+        "December",
+      );
+      expect(formatDate(testDate, "MMMM", { locale: "zh-CN" })).toBe("十二月");
+    });
+
+    it("应正确显示月份缩写", () => {
+      expect(formatDate(testDate, "MMM", { locale: "en-US" })).toBe("Dec");
+      expect(formatDate(testDate, "MMM", { locale: "zh-CN" })).toBe("12月");
+    });
+
+    it("应正确显示一年中的第几天", () => {
+      // 2023年12月25日是一年中的第359天
+      expect(formatDate(testDate, "DDD")).toBe("359");
+    });
+
+    it("应正确显示带序数词的日期", () => {
+      expect(formatDate(testDate, "Do")).toBe("25th");
+      expect(formatDate(new Date("2023-01-01"), "Do")).toBe("1st");
+      expect(formatDate(new Date("2023-01-02"), "Do")).toBe("2nd");
+      expect(formatDate(new Date("2023-01-03"), "Do")).toBe("3rd");
+      expect(formatDate(new Date("2023-01-04"), "Do")).toBe("4th");
+    });
+
+    it("应正确显示单个毫秒", () => {
+      expect(formatDate(testDate, "S")).toBe("123");
+    });
+
+    it("应正确显示完整星期名称", () => {
+      expect(formatDate(testDate, "dddd", { locale: "en-US" })).toBe("Monday");
+      expect(formatDate(testDate, "dddd", { locale: "zh-CN" })).toBe("星期一");
+    });
+
+    it("应正确显示星期缩写", () => {
+      expect(formatDate(testDate, "ddd", { locale: "en-US" })).toBe("Mon");
+      expect(formatDate(testDate, "ddd", { locale: "zh-CN" })).toBe("周一");
+    });
+
+    it("应正确显示Unix时间戳（秒）", () => {
+      expect(formatDate(testDate, "X")).toBe("1703485845");
+    });
+
+    it("应正确显示Unix时间戳（毫秒）", () => {
+      expect(formatDate(testDate, "x")).toBe("1703485845123");
+    });
+  });
+
   describe("边界和错误处理", () => {
     it("应处理空字符串格式", () => {
       expect(formatDate(testDate, "")).toBe("");
@@ -155,6 +204,28 @@ describe("formatDate", () => {
       expect(result).toContain("周一");
       expect(result).toContain("4季度");
       expect(result).toContain("52周");
+      expect(result).toContain("1703485845123");
+    });
+
+    it("应处理包含所有新标记的复杂组合", () => {
+      const result = formatDate(
+        testDate,
+        "YYYY年MMMMM月DDD日 Do dddd ddd Q季度 WW周 HH:mm:ss.SSS S A a X x",
+        { locale: "en-US" },
+      );
+      expect(result).toContain("2023");
+      expect(result).toContain("December");
+      expect(result).toContain("359");
+      expect(result).toContain("25th");
+      expect(result).toContain("Monday");
+      expect(result).toContain("Mon");
+      expect(result).toContain("4");
+      expect(result).toContain("52");
+      expect(result).toContain("14:30:45.123");
+      expect(result).toContain("123");
+      expect(result).toContain("PM");
+      expect(result).toContain("pm");
+      expect(result).toContain("1703485845");
       expect(result).toContain("1703485845123");
     });
   });

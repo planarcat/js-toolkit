@@ -47,17 +47,15 @@ export interface ToFormattedNumberStringOptions extends CommonFormatOptions {
    */
   preProcessor?: (original: unknown, converted: number) => number;
   /**
-   * 前缀，可以是字符串或函数，
-   * 默认''。
-   * 如果是函数，接收参数：原始对象、转化后数字、格式化后的字符串，返回字符串作为前缀
+   * 前缀，字符串或函数，
+   * 函数接收参数：原始对象、转化后数字、格式化后的字符串，返回字符串。
    */
   prefix?:
     | string
     | ((original: unknown, converted: number, formatted: string) => string);
   /**
-   * 后缀，可以是字符串或函数，
-   * 默认''。
-   * 如果是函数，接收参数：原始对象、转化后数字、格式化后的字符串，返回字符串作为后缀
+   * 后缀，字符串或函数，
+   * 函数接收参数：原始对象、转化后数字、格式化后的字符串，返回字符串。
    */
   suffix?:
     | string

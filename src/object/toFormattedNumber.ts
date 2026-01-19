@@ -48,11 +48,7 @@ function convertToNumber(value: unknown): number {
  * 支持深层数组递归处理
  *
  * @param object - 要格式化的目标
- * @param options - 格式化选项
- * @param options.decimalPlaces - 保留多少位小数，默认true（保留所有小数位）
- *                               true: 保留所有小数位，不额外处理
- *                               number: 保留指定小数位，四舍五入
- * @param options.nanValue - 当值为NaN时的显示，默认NaN
+ * @param options - 格式化选项，具体参数说明见类型声明
  *
  * @returns 格式化后的数字或数字数组
  *          - 当传入的 object 为非数组时，返回 number
