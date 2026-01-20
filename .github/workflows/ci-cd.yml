@@ -76,7 +76,10 @@ jobs:
         run: pnpm run build
 
       - name: Publish to npm
-        run: pnpm publish --access public --no-git-checks
+        run: |
+          # 直接发布，无需分支切换
+          echo "发布版本: ${{ github.ref_name }}"
+          pnpm publish --access public --no-git-checks
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
