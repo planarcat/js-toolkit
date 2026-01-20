@@ -8,4 +8,4 @@
 
 > `const` **VERSION**: `"__VERSION__"` = `'__VERSION__'`
 
-Defined in: [index.ts:21](https://github.com/planarcat/js-toolkit/blob/293aaaeea05d115ce12a0c25f1662417d1c4578d/src/index.ts#L21)
+Defined in: [index.ts:21](https://github.com/planarcat/js-toolkit/blob/63cf12b9eae2842fef074dfb1b2c55b96d3d41a3/src/index.ts#L21)

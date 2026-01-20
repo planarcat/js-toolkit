@@ -6,7 +6,7 @@
 
 # Interface: ToFormattedNumberOptions
 
-Defined in: [types/object.ts:16](https://github.com/planarcat/js-toolkit/blob/293aaaeea05d115ce12a0c25f1662417d1c4578d/src/types/object.ts#L16)
+Defined in: [types/object.ts:16](https://github.com/planarcat/js-toolkit/blob/63cf12b9eae2842fef074dfb1b2c55b96d3d41a3/src/types/object.ts#L16)
 
 toFormattedNumber 函数的选项接口
 
@@ -20,7 +20,7 @@ toFormattedNumber 函数的选项接口
 
 > `optional` **decimalPlaces**: `number` \| `true`
 
-Defined in: [types/object.ts:10](https://github.com/planarcat/js-toolkit/blob/293aaaeea05d115ce12a0c25f1662417d1c4578d/src/types/object.ts#L10)
+Defined in: [types/object.ts:10](https://github.com/planarcat/js-toolkit/blob/63cf12b9eae2842fef074dfb1b2c55b96d3d41a3/src/types/object.ts#L10)
 
 保留多少位小数，
 默认true（保留所有小数位，不额外处理），
@@ -36,7 +36,7 @@ Defined in: [types/object.ts:10](https://github.com/planarcat/js-toolkit/blob/29
 
 > `optional` **nanValue**: `number`
 
-Defined in: [types/object.ts:21](https://github.com/planarcat/js-toolkit/blob/293aaaeea05d115ce12a0c25f1662417d1c4578d/src/types/object.ts#L21)
+Defined in: [types/object.ts:21](https://github.com/planarcat/js-toolkit/blob/63cf12b9eae2842fef074dfb1b2c55b96d3d41a3/src/types/object.ts#L21)
 
 当值为NaN时的显示，
 默认NaN。

@@ -8,6 +8,6 @@
 
 > **WeekdayNames** = `Record`\<`string`, \[`string`, `string`, `string`, `string`, `string`, `string`, `string`\]\> \| \[`string`, `string`, `string`, `string`, `string`, `string`, `string`\]
 
-Defined in: [types/date.ts:4](https://github.com/planarcat/js-toolkit/blob/293aaaeea05d115ce12a0c25f1662417d1c4578d/src/types/date.ts#L4)
+Defined in: [types/date.ts:4](https://github.com/planarcat/js-toolkit/blob/63cf12b9eae2842fef074dfb1b2c55b96d3d41a3/src/types/date.ts#L4)
 
 周名称映射类型
