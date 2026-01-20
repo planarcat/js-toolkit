@@ -10,7 +10,7 @@
 
 > **toFormattedNumberString**(`object`, `options?`): `string`[]
 
-Defined in: [object/toFormattedNumberString.ts:232](https://github.com/planarcat/js-toolkit/blob/63cf12b9eae2842fef074dfb1b2c55b96d3d41a3/src/object/toFormattedNumberString.ts#L232)
+Defined in: [object/toFormattedNumberString.ts:232](https://github.com/planarcat/js-toolkit/blob/236fc0f68cdf035c1a7768e799b99158ada6bdb6/src/object/toFormattedNumberString.ts#L232)
 
 ### Parameters
 
@@ -30,7 +30,7 @@ Defined in: [object/toFormattedNumberString.ts:232](https://github.com/planarcat
 
 > **toFormattedNumberString**(`object`, `options?`): `string`
 
-Defined in: [object/toFormattedNumberString.ts:237](https://github.com/planarcat/js-toolkit/blob/63cf12b9eae2842fef074dfb1b2c55b96d3d41a3/src/object/toFormattedNumberString.ts#L237)
+Defined in: [object/toFormattedNumberString.ts:237](https://github.com/planarcat/js-toolkit/blob/236fc0f68cdf035c1a7768e799b99158ada6bdb6/src/object/toFormattedNumberString.ts#L237)
 
 ### Parameters
 
