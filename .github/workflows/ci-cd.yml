@@ -5,6 +5,8 @@ on:
     tags: ['v*']
   pull_request:
     branches: [main]
+  # 允许手动触发
+  workflow_dispatch:
 jobs:
   # 质量检查工作流
   quality-check:
