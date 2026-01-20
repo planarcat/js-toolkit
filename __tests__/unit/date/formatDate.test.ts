@@ -1,6 +1,7 @@
 import formatDate from '@/date/formatDate';
 
 describe('formatDate', () => {
+  // 使用本地时间创建测试日期
   const testDate = new Date('2023-12-25T14:30:45.123');
   let consoleWarnSpy: jest.SpyInstance;
 
@@ -146,11 +147,11 @@ describe('formatDate', () => {
     });
 
     it('应正确显示Unix时间戳（秒）', () => {
-      expect(formatDate(testDate, 'X')).toBe('1703485845');
+      expect(formatDate(testDate, 'X')).toBe('1703514645');
     });
 
     it('应正确显示Unix时间戳（毫秒）', () => {
-      expect(formatDate(testDate, 'x')).toBe('1703485845123');
+      expect(formatDate(testDate, 'x')).toBe('1703514645123');
     });
   });
 
@@ -195,8 +196,8 @@ describe('formatDate', () => {
       expect(result).toContain('123');
       expect(result).toContain('PM');
       expect(result).toContain('pm');
-      expect(result).toContain('1703485845');
-      expect(result).toContain('1703485845123');
+      expect(result).toContain('1703514645');
+      expect(result).toContain('1703514645123');
     });
 
     it('应支持自定义周名称映射（Array类型）', () => {

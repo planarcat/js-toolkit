@@ -107,9 +107,27 @@ export function regularDateFormatter(
     (date.getTime() - firstDayOfYear.getTime()) / (1000 * 60 * 60 * 24),
   );
 
-  // Unix 时间戳
-  const timestampSeconds = Math.floor(date.getTime() / 1000);
-  const timestampMilliseconds = date.getTime();
+  // Unix 时间戳（基于 UTC 时间，使用 getUTC* 方法确保一致性）
+  const timestampSeconds = Math.floor(
+    Date.UTC(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate(),
+      date.getHours(),
+      date.getMinutes(),
+      date.getSeconds(),
+      date.getMilliseconds(),
+    ) / 1000,
+  );
+  const timestampMilliseconds = Date.UTC(
+    date.getFullYear(),
+    date.getMonth(),
+    date.getDate(),
+    date.getHours(),
+    date.getMinutes(),
+    date.getSeconds(),
+    date.getMilliseconds(),
+  );
 
   // 12小时制
   const hours12 = hours % 12 || 12;

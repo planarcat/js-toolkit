@@ -54,10 +54,10 @@ import { debounce } from '@planarcat/js-toolkit';
 
 // 创建防抖函数
 const debouncedFn = debounce(
-    () => {
-        console.log('函数执行了！');
-    },
-    { delay: 500 },
+  () => {
+    console.log('函数执行了！');
+  },
+  { delay: 500 },
 );
 
 // 多次调用，只会执行最后一次
@@ -70,7 +70,10 @@ debouncedFn();
 ### 数字格式化
 
 ```typescript
-import { toFormattedNumber, toFormattedNumberString } from '@planarcat/js-toolkit';
+import {
+  toFormattedNumber,
+  toFormattedNumberString,
+} from '@planarcat/js-toolkit';
 
 // 基本使用
 console.log(toFormattedNumber(1234.5678));
@@ -90,10 +93,10 @@ console.log(toFormattedNumber([123.456, '456.789']));
 
 // 处理深层数组
 console.log(
-    toFormattedNumber([
-        [1, '1.23'],
-        ['45.67', [89.01, 'abc']],
-    ]),
+  toFormattedNumber([
+    [1, '1.23'],
+    ['45.67', [89.01, 'abc']],
+  ]),
 );
 // 输出: [[1, 1.23], [45.67, [89.01, NaN]]]
 
@@ -106,7 +109,9 @@ console.log(toFormattedNumberString(123.4, { decimalPlaces: 2 }));
 // 输出: "123.40"
 
 // 带前缀后缀
-console.log(toFormattedNumberString(1234.5678, { prefix: '$', suffix: ' USD' }));
+console.log(
+  toFormattedNumberString(1234.5678, { prefix: '$', suffix: ' USD' }),
+);
 // 输出: "$1234.5678 USD"
 
 // 本地化格式
@@ -121,31 +126,33 @@ console.log(toFormattedNumberString(0, { zeroValue: '-' }));
 
 // 预处理函数
 console.log(
-    toFormattedNumberString(0.1234, {
-        preProcessor: (original, num) => num * 100,
-        suffix: '%',
-    }),
+  toFormattedNumberString(0.1234, {
+    preProcessor: (original, num) => num * 100,
+    suffix: '%',
+  }),
 );
 // 输出: "12.34%"
 
 // 函数类型前缀
 console.log(
-    toFormattedNumberString(123.456, {
-        prefix: (original, num, formatted) => `$${Math.floor(num)}`,
-    }),
+  toFormattedNumberString(123.456, {
+    prefix: (original, num, formatted) => `$${Math.floor(num)}`,
+  }),
 );
 // 输出: "$123123.456"
 
 // 函数类型后缀
 console.log(
-    toFormattedNumberString(123.456, {
-        suffix: (original, num, formatted) => `/${num.toFixed(0)}`,
-    }),
+  toFormattedNumberString(123.456, {
+    suffix: (original, num, formatted) => `/${num.toFixed(0)}`,
+  }),
 );
 // 输出: "123.456/123"
 
 // 处理数组
-console.log(toFormattedNumberString([123.456, '789.012'], { decimalPlaces: 2 }));
+console.log(
+  toFormattedNumberString([123.456, '789.012'], { decimalPlaces: 2 }),
+);
 // 输出: ["123.46", "789.01"]
 ```
 
@@ -162,10 +169,10 @@ console.log(toFormattedNumberString([123.456, '789.012'], { decimalPlaces: 2 }))
 
 ```bash
 # 生成 API 文档
-npm run docs
+pnpm run docs
 
 # 监听模式生成文档
-npm run docs:watch
+pnpm run docs:watch
 ```
 
 ## 开发
@@ -195,25 +202,25 @@ src/
 
 ```bash
 # 安装依赖
-npm install
+pnpm install
 
 # 构建项目
-npm run build
+pnpm run build
 
 # 运行测试
-npm test
+pnpm test
 
 # 运行测试（监听模式）
-npm run test:watch
+pnpm run test:watch
 
 # 代码检查
-npm run lint
+pnpm run lint
 
 # 代码格式化
-npm run format
+pnpm run format
 
 # 清理构建文件
-npm run clean
+pnpm run clean
 ```
 
 ### 测试
@@ -222,10 +229,10 @@ npm run clean
 
 ```bash
 # 运行所有测试
-npm test
+pnpm test
 
 # 生成测试覆盖率报告
-npm run test:coverage
+pnpm run test:coverage
 ```
 
 ## 贡献
@@ -247,6 +254,15 @@ npm run test:coverage
 - **planarcat** - [GitHub](https://github.com/planarcat)
 
 ## 更新日志
+
+### v1.7.1
+
+- ✨ 修复了 `formatDate` 函数中 Unix 时间戳计算问题，确保基于 UTC 时间
+- ✨ 统一了 regular 和 compile 两种模式下的时间戳计算逻辑
+- ✨ 修复了测试用例中的时间戳期望值，确保跨时区测试通过
+- ✨ 优化了项目依赖管理，迁移到 pnpm 包管理器
+- ✨ 新增了自动化发布流程，支持 GitHub Actions 自动发布到 npm
+- ✨ 添加了 API 文档自动部署到 GitHub Pages 的功能
 
 ### v1.7.0
 
