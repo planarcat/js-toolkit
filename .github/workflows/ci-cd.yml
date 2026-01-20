@@ -1,10 +1,10 @@
 name: CI/CD Pipeline
 on:
   push:
-    branches: [main]
+    branches: [main, master]
     tags: ['v*']
   pull_request:
-    branches: [main]
+    branches: [main, master]
   # 允许手动触发
   workflow_dispatch:
 jobs:
@@ -74,8 +74,8 @@ jobs:
 
       - name: Publish to npm
         run: |
-          # 切换到 main 分支以避免 detached HEAD 问题
-          git checkout main
+          # 切换到 master 分支以避免 detached HEAD 问题
+          git checkout master || git checkout main
           pnpm publish --access public --no-git-checks
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
