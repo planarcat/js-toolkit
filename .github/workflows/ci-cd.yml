@@ -71,7 +71,10 @@ jobs:
         run: pnpm run build
 
       - name: Publish to npm
-        run: pnpm publish --access public
+        run: |
+          # 切换到 main 分支以避免 detached HEAD 问题
+          git checkout main
+          pnpm publish --access public --no-git-checks
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
