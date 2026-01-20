@@ -8,7 +8,7 @@
 
 > **debounce**\<`T`\>(`fn`, `delay`, `_options`): [`DebouncedFunction`](../interfaces/DebouncedFunction.md)\<`T`\>
 
-Defined in: [function/debounce.ts:10](https://github.com/planarcat/js-toolkit/blob/e5778bc02982027f29b7bef46421e1bd999af6fd/src/function/debounce.ts#L10)
+Defined in: [function/debounce.ts:10](https://github.com/planarcat/js-toolkit/blob/462ba20b6e7baf674acf66e0fbc7a4a2409c9994/src/function/debounce.ts#L10)
 
 将函数进行防抖处理
 
