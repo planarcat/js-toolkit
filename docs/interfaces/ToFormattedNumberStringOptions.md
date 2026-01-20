@@ -6,7 +6,7 @@
 
 # Interface: ToFormattedNumberStringOptions
 
-Defined in: [types/object.ts:27](https://github.com/planarcat/js-toolkit/blob/dda8049c3011f2a86b8b804085db359b3ecde026/src/types/object.ts#L27)
+Defined in: [types/object.ts:27](https://github.com/planarcat/js-toolkit/blob/87c3119e75b61c86ad32714b3e0420f7648f8e57/src/types/object.ts#L27)
 
 toFormattedNumberString 函数的选项接口
 
@@ -20,7 +20,7 @@ toFormattedNumberString 函数的选项接口
 
 > `optional` **decimalPlaces**: `number` \| `true`
 
-Defined in: [types/object.ts:10](https://github.com/planarcat/js-toolkit/blob/dda8049c3011f2a86b8b804085db359b3ecde026/src/types/object.ts#L10)
+Defined in: [types/object.ts:10](https://github.com/planarcat/js-toolkit/blob/87c3119e75b61c86ad32714b3e0420f7648f8e57/src/types/object.ts#L10)
 
 保留多少位小数，
 默认true（保留所有小数位，不额外处理），
@@ -36,7 +36,7 @@ Defined in: [types/object.ts:10](https://github.com/planarcat/js-toolkit/blob/dd
 
 > `optional` **nanValue**: `string`
 
-Defined in: [types/object.ts:32](https://github.com/planarcat/js-toolkit/blob/dda8049c3011f2a86b8b804085db359b3ecde026/src/types/object.ts#L32)
+Defined in: [types/object.ts:32](https://github.com/planarcat/js-toolkit/blob/87c3119e75b61c86ad32714b3e0420f7648f8e57/src/types/object.ts#L32)
 
 当值为NaN时的显示，
 默认'NaN'。
@@ -47,7 +47,7 @@ Defined in: [types/object.ts:32](https://github.com/planarcat/js-toolkit/blob/dd
 
 > `optional` **zeroValue**: `string`
 
-Defined in: [types/object.ts:37](https://github.com/planarcat/js-toolkit/blob/dda8049c3011f2a86b8b804085db359b3ecde026/src/types/object.ts#L37)
+Defined in: [types/object.ts:37](https://github.com/planarcat/js-toolkit/blob/87c3119e75b61c86ad32714b3e0420f7648f8e57/src/types/object.ts#L37)
 
 当值为0时的显示，
 默认'0'。
@@ -58,7 +58,7 @@ Defined in: [types/object.ts:37](https://github.com/planarcat/js-toolkit/blob/dd
 
 > `optional` **localized**: `boolean`
 
-Defined in: [types/object.ts:42](https://github.com/planarcat/js-toolkit/blob/dda8049c3011f2a86b8b804085db359b3ecde026/src/types/object.ts#L42)
+Defined in: [types/object.ts:42](https://github.com/planarcat/js-toolkit/blob/87c3119e75b61c86ad32714b3e0420f7648f8e57/src/types/object.ts#L42)
 
 是否使用本地化格式，
 默认false。
@@ -67,22 +67,23 @@ Defined in: [types/object.ts:42](https://github.com/planarcat/js-toolkit/blob/dd
 
 ### preProcessor()?
 
-> `optional` **preProcessor**: (`num`, `original`) => `number`
+> `optional` **preProcessor**: (`original`, `converted`) => `number`
 
-Defined in: [types/object.ts:47](https://github.com/planarcat/js-toolkit/blob/dda8049c3011f2a86b8b804085db359b3ecde026/src/types/object.ts#L47)
+Defined in: [types/object.ts:48](https://github.com/planarcat/js-toolkit/blob/87c3119e75b61c86ad32714b3e0420f7648f8e57/src/types/object.ts#L48)
 
 预处理函数，在对象被处理为数字后调用，
 默认无。
+接收参数：原始对象、转化后的数字，返回处理后的数字
 
 #### Parameters
-
-##### num
-
-`number`
 
 ##### original
 
 `unknown`
+
+##### converted
+
+`number`
 
 #### Returns
 
@@ -92,20 +93,20 @@ Defined in: [types/object.ts:47](https://github.com/planarcat/js-toolkit/blob/dd
 
 ### prefix?
 
-> `optional` **prefix**: `string` \| (`value`, `original`) => `string`
+> `optional` **prefix**: `string` \| (`original`, `converted`, `formatted`) => `string`
 
-Defined in: [types/object.ts:52](https://github.com/planarcat/js-toolkit/blob/dda8049c3011f2a86b8b804085db359b3ecde026/src/types/object.ts#L52)
+Defined in: [types/object.ts:53](https://github.com/planarcat/js-toolkit/blob/87c3119e75b61c86ad32714b3e0420f7648f8e57/src/types/object.ts#L53)
 
-前缀，可以是字符串或函数，
-默认''。
+前缀，字符串或函数，
+函数接收参数：原始对象、转化后数字、格式化后的字符串，返回字符串。
 
 ***
 
 ### suffix?
 
-> `optional` **suffix**: `string` \| (`formatted`, `value`, `original`) => `string`
+> `optional` **suffix**: `string` \| (`original`, `converted`, `formatted`) => `string`
 
-Defined in: [types/object.ts:57](https://github.com/planarcat/js-toolkit/blob/dda8049c3011f2a86b8b804085db359b3ecde026/src/types/object.ts#L57)
+Defined in: [types/object.ts:60](https://github.com/planarcat/js-toolkit/blob/87c3119e75b61c86ad32714b3e0420f7648f8e57/src/types/object.ts#L60)
 
-后缀，可以是字符串或函数，
-默认''。
+后缀，字符串或函数，
+函数接收参数：原始对象、转化后数字、格式化后的字符串，返回字符串。

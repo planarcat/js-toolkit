@@ -10,7 +10,7 @@
 
 > **toFormattedNumber**(`object`, `options?`): `number`[]
 
-Defined in: [object/toFormattedNumber.ts:101](https://github.com/planarcat/js-toolkit/blob/dda8049c3011f2a86b8b804085db359b3ecde026/src/object/toFormattedNumber.ts#L101)
+Defined in: [object/toFormattedNumber.ts:97](https://github.com/planarcat/js-toolkit/blob/87c3119e75b61c86ad32714b3e0420f7648f8e57/src/object/toFormattedNumber.ts#L97)
 
 将任意对象转化为数字，然后根据格式化参数对转化后的数字进行格式化
 
@@ -30,7 +30,7 @@ Defined in: [object/toFormattedNumber.ts:101](https://github.com/planarcat/js-to
 
 [`ToFormattedNumberOptions`](../interfaces/ToFormattedNumberOptions.md)
 
-格式化选项
+格式化选项，具体参数说明见类型声明
 
 ### Returns
 
@@ -84,7 +84,7 @@ toFormattedNumber('abc', { nanValue: -1 }); // -1
 
 > **toFormattedNumber**(`object`, `options?`): `number`
 
-Defined in: [object/toFormattedNumber.ts:103](https://github.com/planarcat/js-toolkit/blob/dda8049c3011f2a86b8b804085db359b3ecde026/src/object/toFormattedNumber.ts#L103)
+Defined in: [object/toFormattedNumber.ts:102](https://github.com/planarcat/js-toolkit/blob/87c3119e75b61c86ad32714b3e0420f7648f8e57/src/object/toFormattedNumber.ts#L102)
 
 将任意对象转化为数字，然后根据格式化参数对转化后的数字进行格式化
 
@@ -104,7 +104,7 @@ Defined in: [object/toFormattedNumber.ts:103](https://github.com/planarcat/js-to
 
 [`ToFormattedNumberOptions`](../interfaces/ToFormattedNumberOptions.md)
 
-格式化选项
+格式化选项，具体参数说明见类型声明
 
 ### Returns
 

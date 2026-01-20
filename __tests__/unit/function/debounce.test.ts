@@ -1,6 +1,6 @@
-import debounce from "../../../src/function/debounce";
+import debounce from '@/function/debounce';
 
-describe("debounce", () => {
+describe('debounce', () => {
   // 控制 setTimeout 的时间
   jest.useFakeTimers();
 
@@ -9,7 +9,7 @@ describe("debounce", () => {
     jest.clearAllTimers();
   });
 
-  it("应在延迟后执行函数", () => {
+  it('应在延迟后执行函数', () => {
     const mockFn = jest.fn();
     const debouncedFn = debounce(mockFn, 100);
 
@@ -25,7 +25,7 @@ describe("debounce", () => {
     expect(mockFn).toHaveBeenCalledTimes(1);
   });
 
-  it("应在多次调用时只执行最后一次", () => {
+  it('应在多次调用时只执行最后一次', () => {
     const mockFn = jest.fn();
     const debouncedFn = debounce(mockFn, 100);
 
@@ -41,21 +41,21 @@ describe("debounce", () => {
     expect(mockFn).toHaveBeenCalledTimes(1);
   });
 
-  it("应能正确传递参数", () => {
+  it('应能正确传递参数', () => {
     const mockFn = jest.fn();
     const debouncedFn = debounce(mockFn, 100);
 
     // 带参数调用
-    debouncedFn("param1", 123, { key: "value" });
+    debouncedFn('param1', 123, { key: 'value' });
 
     // 推进时间
     jest.advanceTimersByTime(100);
 
     // 检查参数是否正确传递
-    expect(mockFn).toHaveBeenCalledWith("param1", 123, { key: "value" });
+    expect(mockFn).toHaveBeenCalledWith('param1', 123, { key: 'value' });
   });
 
-  it("应能正确绑定 this 上下文", () => {
+  it('应能正确绑定 this 上下文', () => {
     interface Context {
       value: number;
     }
@@ -77,7 +77,7 @@ describe("debounce", () => {
     expect(mockFn).toHaveBeenCalledTimes(1);
   });
 
-  it("应支持取消功能", () => {
+  it('应支持取消功能', () => {
     const mockFn = jest.fn();
     const debouncedFn = debounce(mockFn, 100);
 
@@ -93,7 +93,7 @@ describe("debounce", () => {
     expect(mockFn).not.toHaveBeenCalled();
   });
 
-  it("应使用默认延迟时间（100ms）", () => {
+  it('应使用默认延迟时间（100ms）', () => {
     const mockFn = jest.fn();
     const debouncedFn = debounce(mockFn); // 未指定延迟
 
@@ -108,7 +108,7 @@ describe("debounce", () => {
     expect(mockFn).toHaveBeenCalledTimes(1);
   });
 
-  it("应在取消后重新调用时正常执行", () => {
+  it('应在取消后重新调用时正常执行', () => {
     const mockFn = jest.fn();
     const debouncedFn = debounce(mockFn, 100);
 

@@ -6,7 +6,7 @@
 
 # Interface: DebounceOptions
 
-Defined in: [types/function.ts:4](https://github.com/planarcat/js-toolkit/blob/dda8049c3011f2a86b8b804085db359b3ecde026/src/types/function.ts#L4)
+Defined in: [types/function.ts:4](https://github.com/planarcat/js-toolkit/blob/87c3119e75b61c86ad32714b3e0420f7648f8e57/src/types/function.ts#L4)
 
 ## Properties
 
@@ -14,6 +14,6 @@ Defined in: [types/function.ts:4](https://github.com/planarcat/js-toolkit/blob/d
 
 > `optional` **delay**: `number`
 
-Defined in: [types/function.ts:8](https://github.com/planarcat/js-toolkit/blob/dda8049c3011f2a86b8b804085db359b3ecde026/src/types/function.ts#L8)
+Defined in: [types/function.ts:8](https://github.com/planarcat/js-toolkit/blob/87c3119e75b61c86ad32714b3e0420f7648f8e57/src/types/function.ts#L8)
 
 防抖延迟时间，默认500ms

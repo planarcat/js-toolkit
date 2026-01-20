@@ -16,6 +16,8 @@
 
 ## Type Aliases
 
+- [WeekdayNames](type-aliases/WeekdayNames.md)
+- [DateFormatMode](type-aliases/DateFormatMode.md)
 - [DateInput](type-aliases/DateInput.md)
 
 ## Variables
