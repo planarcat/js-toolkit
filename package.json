@@ -1,6 +1,6 @@
 {
   "name": "@planarcat/js-toolkit",
-  "version": "1.7.2",
+  "version": "1.7.3",
   "description": "一个自用的带学习性质的（目前）现代化的 JavaScript/TypeScript 实用工具库，提供类型安全、高性能的常用函数，包括对象转换、日期处理、函数优化等开发常用工具。",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
