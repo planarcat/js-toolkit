@@ -6,7 +6,7 @@
 
 # Interface: DateFormatOptions
 
-Defined in: [types/date.ts:9](https://github.com/planarcat/js-toolkit/blob/87c3119e75b61c86ad32714b3e0420f7648f8e57/src/types/date.ts#L9)
+Defined in: [types/date.ts:11](https://github.com/planarcat/js-toolkit/blob/293aaaeea05d115ce12a0c25f1662417d1c4578d/src/types/date.ts#L11)
 
 日期格式化选项接口
 
@@ -16,7 +16,7 @@ Defined in: [types/date.ts:9](https://github.com/planarcat/js-toolkit/blob/87c31
 
 > `optional` **timeZone**: `"local"` \| `"utc"`
 
-Defined in: [types/date.ts:14](https://github.com/planarcat/js-toolkit/blob/87c3119e75b61c86ad32714b3e0420f7648f8e57/src/types/date.ts#L14)
+Defined in: [types/date.ts:16](https://github.com/planarcat/js-toolkit/blob/293aaaeea05d115ce12a0c25f1662417d1c4578d/src/types/date.ts#L16)
 
 时区设置
 
@@ -32,7 +32,7 @@ Defined in: [types/date.ts:14](https://github.com/planarcat/js-toolkit/blob/87c3
 
 > `optional` **locale**: `string`
 
-Defined in: [types/date.ts:20](https://github.com/planarcat/js-toolkit/blob/87c3119e75b61c86ad32714b3e0420f7648f8e57/src/types/date.ts#L20)
+Defined in: [types/date.ts:22](https://github.com/planarcat/js-toolkit/blob/293aaaeea05d115ce12a0c25f1662417d1c4578d/src/types/date.ts#L22)
 
 语言环境
 
@@ -48,7 +48,7 @@ Defined in: [types/date.ts:20](https://github.com/planarcat/js-toolkit/blob/87c3
 
 > `optional` **mode**: [`DateFormatMode`](../type-aliases/DateFormatMode.md)
 
-Defined in: [types/date.ts:26](https://github.com/planarcat/js-toolkit/blob/87c3119e75b61c86ad32714b3e0420f7648f8e57/src/types/date.ts#L26)
+Defined in: [types/date.ts:28](https://github.com/planarcat/js-toolkit/blob/293aaaeea05d115ce12a0c25f1662417d1c4578d/src/types/date.ts#L28)
 
 格式化模式
 
@@ -64,7 +64,7 @@ Defined in: [types/date.ts:26](https://github.com/planarcat/js-toolkit/blob/87c3
 
 > `optional` **customFormatters**: `Record`\<`string`, (`date`) => `string`\>
 
-Defined in: [types/date.ts:31](https://github.com/planarcat/js-toolkit/blob/87c3119e75b61c86ad32714b3e0420f7648f8e57/src/types/date.ts#L31)
+Defined in: [types/date.ts:33](https://github.com/planarcat/js-toolkit/blob/293aaaeea05d115ce12a0c25f1662417d1c4578d/src/types/date.ts#L33)
 
 自定义格式化处理器
 
@@ -74,6 +74,6 @@ Defined in: [types/date.ts:31](https://github.com/planarcat/js-toolkit/blob/87c3
 
 > `optional` **weekdayNames**: [`WeekdayNames`](../type-aliases/WeekdayNames.md)
 
-Defined in: [types/date.ts:36](https://github.com/planarcat/js-toolkit/blob/87c3119e75b61c86ad32714b3e0420f7648f8e57/src/types/date.ts#L36)
+Defined in: [types/date.ts:38](https://github.com/planarcat/js-toolkit/blob/293aaaeea05d115ce12a0c25f1662417d1c4578d/src/types/date.ts#L38)
 
 周名称映射，可以是完整映射或仅当前语言的映射

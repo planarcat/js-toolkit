@@ -1,6 +1,6 @@
 {
   "name": "@planarcat/js-toolkit",
-  "version": "1.7.0",
+  "version": "1.7.1",
   "description": "一个自用的带学习性质的（目前）现代化的 JavaScript/TypeScript 实用工具库，提供类型安全、高性能的常用函数，包括对象转换、日期处理、函数优化等开发常用工具。",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -23,7 +23,13 @@
     "prepublishOnly": "pnpm run lint && pnpm test && pnpm run build",
     "clean": "rimraf dist coverage",
     "docs": "typedoc",
-    "docs:watch": "typedoc --watch"
+    "docs:watch": "typedoc --watch",
+    "bump": "node scripts/bump-version.js",
+    "bump:patch": "node scripts/bump-version.js patch",
+    "bump:minor": "node scripts/bump-version.js minor",
+    "bump:major": "node scripts/bump-version.js major",
+    "bump:beta": "node scripts/bump-version.js prerelease beta",
+    "bump:alpha": "node scripts/bump-version.js prerelease alpha"
   },
   "keywords": [
     "javascript",
