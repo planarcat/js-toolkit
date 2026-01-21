@@ -7,9 +7,13 @@ on:
   # 允许手动触发
   workflow_dispatch:
 
-# 配置权限以创建 GitHub Release
+# 配置权限，用于 Trusted Publishing 和创建 GitHub Release
 permissions:
+  # 允许读取仓库内容
   contents: write
+  # 允许生成 OIDC 令牌用于 npm 身份验证
+  id-token: write
+  # 允许管理包
   packages: write
 
 jobs:
@@ -49,13 +53,12 @@ jobs:
       - name: Build package
         run: pnpm run build
 
-      - name: Publish to npm
+      - name: Publish to npm with Trusted Publishing
         run: |
-          # 直接发布，无需分支切换
+          # 使用 Trusted Publishing 发布，无需 NODE_AUTH_TOKEN
           echo "发布版本: ${{ github.ref_name }}"
           pnpm publish --access public --no-git-checks
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          # Trusted Publishing 会自动处理 OIDC 身份验证
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
