@@ -73,6 +73,7 @@ debouncedFn();
 import {
   toFormattedNumber,
   toFormattedNumberString,
+  DecimalPlacesOptions,
 } from '@planarcat/js-toolkit';
 
 // 基本使用
@@ -82,6 +83,14 @@ console.log(toFormattedNumber(1234.5678));
 // 保留两位小数
 console.log(toFormattedNumber(1234.5678, { decimalPlaces: 2 }));
 // 输出: 1234.57
+
+// 使用 RETAIN_ALL 常量保留所有小数位
+console.log(
+  toFormattedNumber(1234.5678, {
+    decimalPlaces: DecimalPlacesOptions.RETAIN_ALL,
+  }),
+);
+// 输出: 1234.5678
 
 // 处理字符串
 console.log(toFormattedNumber('123.45abc'));
@@ -103,6 +112,14 @@ console.log(
 // 数字转格式化字符串
 console.log(toFormattedNumberString(1234.5678, { decimalPlaces: 2 }));
 // 输出: "1234.57"
+
+// 使用 RETAIN_ALL 常量保留所有小数位
+console.log(
+  toFormattedNumberString(1234.5678, {
+    decimalPlaces: DecimalPlacesOptions.RETAIN_ALL,
+  }),
+);
+// 输出: "1234.5678"
 
 // 保留两位小数，不够时补0
 console.log(toFormattedNumberString(123.4, { decimalPlaces: 2 }));
@@ -254,6 +271,17 @@ pnpm run test:coverage
 - **planarcat** - [GitHub](https://github.com/planarcat)
 
 ## 更新日志
+
+### v1.7.13
+
+- ✨ 重构了 `decimalPlaces` 参数类型，使用 `DecimalPlacesOptions` 联合类型
+- ✨ 新增 `DecimalPlacesOptions` 对象，包含 `RETAIN_ALL` 常量用于保留所有小数位
+- ✨ 优化了类型定义，提高了类型安全性
+- ✨ 更新了文档，添加了 `DecimalPlacesOptions` 的使用示例
+
+### v1.7.12
+
+- ✨ 修复了构建错误，解决了合并声明问题
 
 ### v1.7.1
 

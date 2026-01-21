@@ -1,3 +1,5 @@
+import { DecimalPlacesOptions } from '../utils/constants';
+
 /**
  * 从字符串中提取数字部分
  * @param str - 输入字符串
@@ -6,7 +8,7 @@
 function extractNumberFromString(str: string): string {
   // 匹配数字体系：0~9，小数点，正负号，科学计数法
   const match = str.match(/[-+]?\d*\.?\d+(?:[eE][-+]?\d+)?/);
-  return match ? match[0] : "";
+  return match ? match[0] : '';
 }
 
 /**
@@ -16,24 +18,24 @@ function extractNumberFromString(str: string): string {
  */
 function convertToNumber(value: unknown): number {
   switch (typeof value) {
-    case "number":
+    case 'number':
       return value;
-    case "string": {
+    case 'string': {
       const numStr = extractNumberFromString(value);
       return numStr ? Number(numStr) : 0;
     }
-    case "boolean":
+    case 'boolean':
       return value ? 1 : 0;
-    case "function":
-    case "symbol":
+    case 'function':
+    case 'symbol':
       return NaN;
-    case "object":
+    case 'object':
       if (value === null) {
         return NaN;
       }
       // 其他对象类型返回NaN
       return NaN;
-    case "undefined":
+    case 'undefined':
       return NaN;
     default:
       return NaN;
@@ -96,20 +98,21 @@ function convertToNumber(value: unknown): number {
 // 函数重载定义 - 数组输入
 function toFormattedNumber(
   object: unknown[],
-  options?: import("../types/object").ToFormattedNumberOptions,
+  options?: import('../types/object').ToFormattedNumberOptions,
 ): number[];
 // 函数重载定义 - 单个值输入
 function toFormattedNumber(
   object: unknown,
-  options?: import("../types/object").ToFormattedNumberOptions,
+  options?: import('../types/object').ToFormattedNumberOptions,
 ): number;
 // 主函数实现
 function toFormattedNumber(
   object: unknown,
-  options?: import("../types/object").ToFormattedNumberOptions,
+  options?: import('../types/object').ToFormattedNumberOptions,
 ): number | number[] {
   // 解构并设置默认值
-  const { decimalPlaces = true, nanValue = NaN } = options || {};
+  const { decimalPlaces = DecimalPlacesOptions.RETAIN_ALL, nanValue = NaN } =
+    options || {};
 
   /**
    * 格式化单个数字
@@ -123,12 +126,12 @@ function toFormattedNumber(
     }
 
     // 根据decimalPlaces选项处理小数位
-    if (decimalPlaces === true) {
-      // 保留所有小数位，不额外处理
-      return num;
-    } else {
+    if (typeof decimalPlaces === 'number') {
       // 保留指定小数位，四舍五入
       return Number(num.toFixed(decimalPlaces));
+    } else {
+      // 保留所有小数位，不额外处理
+      return num;
     }
   };
 

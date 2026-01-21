@@ -96,11 +96,11 @@ async function main() {
     console.log('提交版本更新和文档变更...');
     try {
       execSync('git add package.json', { stdio: 'inherit' });
-      // 仅当 docs 目录存在且有变更时才添加
-      const docsExists = fs.existsSync(path.join(__dirname, '../docs'));
-      if (docsExists) {
-        execSync('git add docs/', { stdio: 'inherit' });
-      }
+      // 跳过 docs 目录的提交，因为 docs 目录被 .gitignore 忽略
+      // 文档会通过 GitHub Actions 自动部署，不需要手动提交
+      console.log(
+        'docs 目录会通过 GitHub Actions 自动部署，将跳过 docs 目录的提交',
+      );
       execSync(`git commit -m "chore: bump version to ${newVersion}"`, {
         stdio: 'inherit',
       });
