@@ -115,20 +115,34 @@ async function main() {
     const tagName = `v${newVersion}`;
     console.log(`创建标签: ${tagName}`);
     try {
-      execSync(`git tag ${tagName}`, { stdio: 'inherit' });
-      console.log('git 标签创建成功');
+      // 检查标签是否已存在
+      execSync(`git tag -l ${tagName}`, { stdio: 'ignore' });
+      // 如果标签已存在，先删除旧标签
+      execSync(`git tag -d ${tagName}`, { stdio: 'inherit' });
+      console.log(`旧标签 ${tagName} 已删除`);
     } catch (error) {
-      console.error('\n⚠️  git 标签创建失败');
-      console.error('错误信息:', error.message);
-      throw error;
+      // 标签不存在，继续创建
     }
 
+    // 创建新标签
+    execSync(`git tag ${tagName}`, { stdio: 'inherit' });
+    console.log('git 标签创建成功');
+
+    // 推送更新到远程仓库
+    console.log('\n推送更新到远程仓库...');
+    execSync('git push', { stdio: 'inherit' });
+    console.log('代码推送成功');
+
+    // 推送标签到远程仓库
+    console.log('推送标签到远程仓库...');
+    execSync('git push --tags', { stdio: 'inherit' });
+    console.log('标签推送成功');
+
     console.log('\n版本更新完成！');
-    console.log(`使用以下命令推送更新和标签:`);
-    console.log(`  git push`);
-    console.log(`  git push --tags`);
-    console.log('\n推送后，GitHub Actions 将自动发布到 npm！');
-    console.log('\nAPI 文档已自动生成并提交（如果生成成功）！');
+    console.log(`版本 ${newVersion} 已成功推送！`);
+    console.log('GitHub Actions 将自动发布到 npm！');
+    console.log('API 文档已自动生成并提交（如果生成成功）！');
+    console.log('\n请在 GitHub 仓库的 Actions 页面查看发布进度！');
   } catch (error) {
     console.error('\n❌ 版本更新失败');
     console.error('错误信息:', error.message);
