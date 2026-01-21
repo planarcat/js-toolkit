@@ -1,34 +1,27 @@
 name: Publish Only
 
-# 只在标签推送时触发，避免重复运行质量检查
+# 只在标签推送时触发
 on:
   push:
     tags: ['v*']
   # 允许手动触发
   workflow_dispatch:
 
-# 配置权限，用于 Trusted Publishing 和创建 GitHub Release
+# 配置权限，用于 Trusted Publishing
 permissions:
-  # 允许读取仓库内容
-  contents: write
   # 允许生成 OIDC 令牌用于 npm 身份验证
   id-token: write
-  # 允许管理包
-  packages: write
+  # 允许创建 GitHub Release
+  contents: write
 
 jobs:
-  # 发布工作流 - 必须等待质量检查完成
   publish:
     runs-on: ubuntu-latest
-    # 由于两个工作流独立，需要手动检查质量检查状态
     steps:
-      - name: Checkout code with tag
+      - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          # 检出标签对应的提交
-          ref: ${{ github.ref_name }}
 
-      - name: Set up Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20.x'
@@ -39,26 +32,17 @@ jobs:
         with:
           version: 10
 
-      - name: Setup pnpm cache
-        uses: actions/cache@v4
-        with:
-          path: ~/.pnpm-store
-          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-
-
       - name: Install dependencies
         run: pnpm install
 
       - name: Build package
         run: pnpm run build
 
-      - name: Publish to npm with Trusted Publishing
-        run: |
-          # 使用 Trusted Publishing 发布，无需 NODE_AUTH_TOKEN
-          echo "发布版本: ${{ github.ref_name }}"
-          pnpm publish --access public --no-git-checks
-          # Trusted Publishing 会自动处理 OIDC 身份验证
+      - name: Publish to npm
+        run: pnpm publish --access public
+        env:
+          # Trusted Publishing 会自动使用 OIDC 身份验证
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }} # 保留此配置作为后备
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
@@ -67,5 +51,3 @@ jobs:
           name: Release ${{ github.ref_name }}
           draft: false
           prerelease: ${{ contains(github.ref_name, '-beta') || contains(github.ref_name, '-alpha') }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
