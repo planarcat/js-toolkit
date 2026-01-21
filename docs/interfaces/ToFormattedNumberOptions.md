@@ -6,7 +6,7 @@
 
 # Interface: ToFormattedNumberOptions
 
-Defined in: [types/object.ts:16](https://github.com/planarcat/js-toolkit/blob/d49f8c83ce4133ec513032095f987aa2780166da/src/types/object.ts#L16)
+Defined in: [types/object.ts:18](https://github.com/planarcat/js-toolkit/blob/00040541a7360fe4eb5a0f7801bb0f0a060a352d/src/types/object.ts#L18)
 
 toFormattedNumber 函数的选项接口
 
@@ -18,13 +18,13 @@ toFormattedNumber 函数的选项接口
 
 ### decimalPlaces?
 
-> `optional` **decimalPlaces**: `number` \| `true`
+> `optional` **decimalPlaces**: `DecimalPlacesOptions`
 
-Defined in: [types/object.ts:10](https://github.com/planarcat/js-toolkit/blob/d49f8c83ce4133ec513032095f987aa2780166da/src/types/object.ts#L10)
+Defined in: [types/object.ts:12](https://github.com/planarcat/js-toolkit/blob/00040541a7360fe4eb5a0f7801bb0f0a060a352d/src/types/object.ts#L12)
 
 保留多少位小数，
-默认true（保留所有小数位，不额外处理），
-可选值：number(保留指定小数位) | true(保留所有小数位，不额外处理)。
+默认DecimalPlacesOptions.RETAIN_ALL（保留所有小数位，不额外处理），
+可选值：number(保留指定小数位) | DecimalPlacesOptions.RETAIN_ALL(保留所有小数位，不额外处理)。
 
 #### Inherited from
 
@@ -36,7 +36,7 @@ Defined in: [types/object.ts:10](https://github.com/planarcat/js-toolkit/blob/d4
 
 > `optional` **nanValue**: `number`
 
-Defined in: [types/object.ts:21](https://github.com/planarcat/js-toolkit/blob/d49f8c83ce4133ec513032095f987aa2780166da/src/types/object.ts#L21)
+Defined in: [types/object.ts:23](https://github.com/planarcat/js-toolkit/blob/00040541a7360fe4eb5a0f7801bb0f0a060a352d/src/types/object.ts#L23)
 
 当值为NaN时的显示，
 默认NaN。
