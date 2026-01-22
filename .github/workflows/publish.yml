@@ -68,9 +68,9 @@ jobs:
           echo "操作系统: ${{ runner.os }}"
 
           echo "=== 包配置 ==="
-          echo "包名: $(node -p "require('./package.json').name")"
-          echo "包版本: $(node -p "require('./package.json').version")"
-          echo "包访问权限: $(node -p "require('./package.json').publishConfig?.access || 'undefined')"
+          echo "包名: $(node -p 'require("./package.json").name')"
+          echo "包版本: $(node -p 'require("./package.json").version')"
+          echo "包访问权限: $(node -p 'require("./package.json").publishConfig?.access || \"undefined\"')"
 
           echo "=== 目录结构 ==="
           echo "当前目录: $(pwd)"
@@ -78,7 +78,7 @@ jobs:
           ls -la
 
           echo "=== 构建产物 ==="
-          if [ -d "dist" ]; then
+          if [ -d dist ]; then
             echo "dist目录存在，内容:"
             ls -la dist/
           else
