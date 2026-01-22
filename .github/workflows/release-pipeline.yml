@@ -1,0 +1,153 @@
+name: Release Pipeline
+
+on:
+  # 针对 PR 的质量检查
+  pull_request:
+    branches: [main, master]
+
+  # 针对推送的完整发布流程
+  push:
+    branches: [main, master, beta, alpha]
+
+  # 允许手动触发
+  workflow_dispatch:
+
+# 根据事件类型动态设置权限
+permissions:
+  # 基础权限
+  contents: ${{ github.event_name == 'pull_request' && 'read' || 'write' }}
+  pull-requests: ${{ github.event_name == 'pull_request' && 'write' || 'none' }}
+  # 发布相关权限（仅在 push 时生效）
+  id-token: ${{ github.event_name != 'pull_request' && 'write' || 'none' }}
+  issues: ${{ github.event_name != 'pull_request' && 'write' || 'none' }}
+
+jobs:
+  # 质量检查 - 在 PR 和 Push 时都运行
+  quality-check:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' || github.event_name == 'push'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          # PR 时需要获取正确的 ref
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'pnpm'
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 10
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Lint code
+        run: pnpm run lint
+
+      - name: Run tests
+        run: pnpm run test
+
+      - name: Build package
+        run: pnpm run build
+
+      - name: Verify build output
+        run: |
+          if [ ! -d "dist" ] || [ -z "$(ls -A dist/ 2>/dev/null)" ]; then
+            echo "❌ 构建失败或 dist 目录为空"
+            exit 1
+          fi
+          echo "✅ 构建产物检查通过"
+
+  # 文档部署 - 仅在 push 到 main/master 时运行
+  deploy-docs:
+    needs: quality-check
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+    runs-on: ubuntu-latest
+
+    permissions:
+      pages: write
+      id-token: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 10
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build API docs
+        run: pnpm run docs
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: 'docs'
+
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4
+
+  # 发布到 npm - 仅在 push 到特定分支且质量检查通过后运行
+  publish:
+    needs: quality-check
+    if: |
+      github.event_name == 'push' && 
+      needs.quality-check.result == 'success' &&
+      (contains(github.ref, 'refs/heads/main') || 
+       contains(github.ref, 'refs/heads/master') ||
+       contains(github.ref, 'refs/heads/beta') || 
+       contains(github.ref, 'refs/heads/alpha'))
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code for release
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Node.js for semantic-release
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'
+          registry-url: 'https://registry.npmjs.org/'
+          scope: '@planarcat'
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 10
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Run semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # 确保 npm 版本支持 provenance
+          npm install -g npm@latest
+          npm config set provenance true
+
+          # 执行 semantic-release
+          npx semantic-release --debug
