@@ -53,7 +53,7 @@ jobs:
         run: |
           # 使用 Trusted Publishing 发布，无需 NODE_AUTH_TOKEN
           echo "发布版本: ${{ github.ref_name }}"
-          pnpm publish --access public
+          pnpm publish --access public --no-git-checks
           # Trusted Publishing 会自动处理 OIDC 身份验证
 
       - name: Create GitHub Release
