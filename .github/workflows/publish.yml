@@ -51,9 +51,22 @@ jobs:
 
       - name: Publish to npm with Trusted Publishing
         run: |
+          # 调试信息
+          echo "GitHub 仓库: ${{ github.repository }}"
+          echo "GitHub 分支: ${{ github.ref }}"
+          echo "GitHub 运行 ID: ${{ github.run_id }}"
+          echo "Node.js 版本: $(node -v)"
+          echo "pnpm 版本: $(pnpm -v)"
+
+          # 确认包配置
+          echo "包名: $(node -p "require('./package.json').name")"
+          echo "包版本: $(node -p "require('./package.json').version")"
+
           # 使用 Trusted Publishing 发布，无需 NODE_AUTH_TOKEN
           echo "发布版本: ${{ github.ref_name }}"
-          pnpm publish --access public --no-git-checks
+
+          # 使用 npm publish 直接发布，确保使用 OIDC 身份验证
+          npm publish --access public
           # Trusted Publishing 会自动处理 OIDC 身份验证
 
       - name: Create GitHub Release
