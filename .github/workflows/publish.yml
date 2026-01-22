@@ -95,8 +95,11 @@ jobs:
           echo "发布命令: npm publish --access public"
 
           echo "=== 开始发布 ==="
+          # 确保使用足够新的 npm 以支持 provenance
+          npm install -g npm@latest
           # 使用 npm publish 直接发布，确保使用 OIDC 身份验证
-          npm publish --access public
+          # 使用 --provenance 生成发布来源证明（最佳实践）
+          npm publish --provenance --access public
           # Trusted Publishing 会自动处理 OIDC 身份验证
 
       - name: Create GitHub Release
