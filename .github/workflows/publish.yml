@@ -24,11 +24,13 @@ jobs:
           # 确保获取完整的 git 历史
           fetch-depth: 0
 
-      - name: Set up Node.js
+      - name: Set up Node.js for Trusted Publishing
         uses: actions/setup-node@v4
         with:
           node-version: '20.x'
           registry-url: 'https://registry.npmjs.org/'
+          # 配置用于 Trusted Publishing 的设置
+          scope: '@planarcat'
 
       - name: Install pnpm
         uses: pnpm/action-setup@v3
@@ -51,32 +53,50 @@ jobs:
 
       - name: Publish to npm with Trusted Publishing
         run: |
-          # 调试信息
+          # 详细调试信息
+          echo "=== 调试信息 ==="
           echo "GitHub 仓库: ${{ github.repository }}"
           echo "GitHub 分支: ${{ github.ref }}"
+          echo "GitHub 事件: ${{ github.event_name }}"
           echo "GitHub 运行 ID: ${{ github.run_id }}"
-          echo "Node.js 版本: $(node -v)"
-          echo "pnpm 版本: $(pnpm -v)"
+          echo "GitHub 工作流: ${{ github.workflow }}"
 
-          # 确认包配置
+          echo "=== 环境信息 ==="
+          echo "Node.js 版本: $(node -v)"
+          echo "npm 版本: $(npm -v)"
+          echo "pnpm 版本: $(pnpm -v)"
+          echo "操作系统: ${{ runner.os }}"
+
+          echo "=== 包配置 ==="
           echo "包名: $(node -p "require('./package.json').name")"
           echo "包版本: $(node -p "require('./package.json').version")"
+          echo "包访问权限: $(node -p "require('./package.json').publishConfig?.access || 'undefined')"
 
-          # 检查当前目录和文件
+          echo "=== 目录结构 ==="
           echo "当前目录: $(pwd)"
-          echo "目录内容: $(ls -la)"
+          echo "根目录文件:"
+          ls -la
 
-          # 检查构建产物
-          echo "构建产物: $(ls -la dist/)"
+          echo "=== 构建产物 ==="
+          if [ -d "dist" ]; then
+            echo "dist目录存在，内容:"
+            ls -la dist/
+          else
+            echo "⚠️  dist目录不存在！"
+            echo "构建命令输出:"
+            pnpm run build
+          fi
 
-          # 使用 Trusted Publishing 发布，无需 NODE_AUTH_TOKEN
+          echo "=== npm 配置 ==="
+          npm config list
+
+          echo "=== 发布前准备 ==="
           echo "发布版本: ${{ github.ref_name }}"
+          echo "发布命令: npm publish --access public"
 
-          # 设置 npm registry
-          npm config set registry https://registry.npmjs.org/
-
-          # 使用 pnpm publish 发布，添加必要参数
-          pnpm publish --registry=https://registry.npmjs.org/ --access=public --no-git-checks
+          echo "=== 开始发布 ==="
+          # 使用 npm publish 直接发布，确保使用 OIDC 身份验证
+          npm publish --access public
           # Trusted Publishing 会自动处理 OIDC 身份验证
 
       - name: Create GitHub Release
