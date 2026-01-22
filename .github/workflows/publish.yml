@@ -3,7 +3,8 @@ name: Release
 on:
   push:
     branches: [main, beta, alpha]
-  # 移除 workflow_dispatch 或根据需要保留
+  pull_request:
+    branches: [main]
 
 # 必须的权限配置
 permissions:
@@ -13,38 +14,33 @@ permissions:
   pull-requests: write # 用于更新 PR 链接
 
 jobs:
-  release:
+  # 新增：测试和验证工作
+  test-and-build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0 # 必须获取完整历史记录供 semantic-release 分析
-          token: ${{ secrets.GITHUB_TOKEN }} # 用于推送回仓库
 
-      - name: Set up Node.js
+      - name: Set up Node.js for testing
         uses: actions/setup-node@v4
         with:
+          # 保持你项目原本的 Node.js 版本要求
           node-version: '20.x'
-          registry-url: 'https://registry.npmjs.org/'
-          scope: '@planarcat'
+          cache: 'pnpm'
 
       - name: Install pnpm
         uses: pnpm/action-setup@v3
         with:
           version: 10
 
-      - name: Setup pnpm cache
-        uses: actions/cache@v4
-        with:
-          path: ~/.pnpm-store
-          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-
-
       - name: Install dependencies
         run: pnpm install
+
+      - name: Lint check
+        run: pnpm run lint
+
+      - name: Run tests
+        run: pnpm test
 
       - name: Build package
         run: pnpm run build
@@ -57,11 +53,52 @@ jobs:
           fi
           echo "✅ 构建产物检查通过"
 
-      - name: Run semantic-release
+  # 发布工作，仅在测试通过后执行
+  release:
+    needs: test-and-build # 依赖测试工作完成
+    if: github.event_name == 'push' && contains(github.ref, 'refs/heads/main') # 仅 main 分支推送时发布
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # 必须获取完整历史记录供 semantic-release 分析
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Node.js for release
+        uses: actions/setup-node@v4
+        with:
+          # 使用 semantic-release 要求的版本
+          node-version: '22.x' # semantic-release 要求 ^22.14.0 || >= 24.10.0
+          registry-url: 'https://registry.npmjs.org/'
+          scope: '@planarcat'
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 10
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build package (再次确保最新代码)
+        run: pnpm run build
+
+      - name: Run semantic-release with provenance support
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           # 确保 npm 版本足够新以支持 provenance
+          echo "当前 Node.js 版本: $(node -v)"
+          echo "当前 npm 版本: $(npm -v)"
+
+          # 更新到最新 npm 以支持 --provenance
           npm install -g npm@latest
+          echo "更新后 npm 版本: $(npm -v)"
+
+          # 配置 npm 使用 provenance
+          npm config set provenance true
+
           # 执行 semantic-release
           npx semantic-release --debug
