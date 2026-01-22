@@ -252,6 +252,35 @@ pnpm test
 pnpm run test:coverage
 ```
 
+### 发布
+
+项目使用 GitHub Actions 和 Trusted Publishing 进行自动发布。
+
+#### 发布流程
+
+1. **更新版本号**：使用 `bump-version.js` 脚本更新版本号
+   ```bash
+   # 可选参数：patch (默认), minor, major, prerelease
+   pnpm run bump:patch
+   ```
+
+2. **推送代码和标签**：
+   ```bash
+   git push && git push --tags
+   ```
+
+3. **自动发布**：GitHub Actions 将自动触发发布流程：
+   - 执行质量检查
+   - 构建项目
+   - 使用 Trusted Publishing 发布到 npm
+   - 创建 GitHub Release
+
+#### 发布配置
+
+- **Trusted Publishing**：通过 OIDC 令牌进行身份验证，无需持久化的 npm 令牌
+- **自动触发**：仅在标签推送时触发发布
+- **安全可靠**：使用 GitHub Actions 安全上下文
+
 ## 贡献
 
 欢迎贡献代码！请遵循以下步骤：

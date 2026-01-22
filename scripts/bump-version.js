@@ -92,15 +92,10 @@ async function main() {
       // 继续执行版本更新，不中断流程
     }
 
-    // 提交版本更新和文档变更
-    console.log('提交版本更新和文档变更...');
+    // 提交版本更新
+    console.log('提交版本更新...');
     try {
       execSync('git add package.json', { stdio: 'inherit' });
-      // 跳过 docs 目录的提交，因为 docs 目录被 .gitignore 忽略
-      // 文档会通过 GitHub Actions 自动部署，不需要手动提交
-      console.log(
-        'docs 目录会通过 GitHub Actions 自动部署，将跳过 docs 目录的提交',
-      );
       execSync(`git commit -m "chore: bump version to ${newVersion}"`, {
         stdio: 'inherit',
       });
@@ -111,9 +106,9 @@ async function main() {
       throw error;
     }
 
-    // 创建 git 标签
+    // 创建 git 标签（仅本地）
     const tagName = `v${newVersion}`;
-    console.log(`创建标签: ${tagName}`);
+    console.log(`\n创建本地标签: ${tagName}`);
     try {
       // 检查标签是否已存在
       execSync(`git tag -l ${tagName}`, { stdio: 'ignore' });
@@ -126,23 +121,16 @@ async function main() {
 
     // 创建新标签
     execSync(`git tag ${tagName}`, { stdio: 'inherit' });
-    console.log('git 标签创建成功');
-
-    // 推送更新到远程仓库
-    console.log('\n推送更新到远程仓库...');
-    execSync('git push', { stdio: 'inherit' });
-    console.log('代码推送成功');
-
-    // 推送标签到远程仓库
-    console.log('推送标签到远程仓库...');
-    execSync('git push --tags', { stdio: 'inherit' });
-    console.log('标签推送成功');
+    console.log('本地标签创建成功');
 
     console.log('\n版本更新完成！');
-    console.log(`版本 ${newVersion} 已成功推送！`);
-    console.log('GitHub Actions 将自动发布到 npm！');
-    console.log('API 文档已自动生成并提交（如果生成成功）！');
-    console.log('\n请在 GitHub 仓库的 Actions 页面查看发布进度！');
+    console.log('\n📋 发布步骤：');
+    console.log('1. 推送代码变更：git push');
+    console.log('2. 推送标签：git push --tags');
+    console.log('3. GitHub Actions 将自动使用 Trusted Publishing 发布到 npm');
+    console.log('4. 查看发布进度：访问 GitHub 仓库的 Actions 页面');
+    console.log('\n🚀 发布命令：');
+    console.log(`git push && git push --tags`);
   } catch (error) {
     console.error('\n❌ 版本更新失败');
     console.error('错误信息:', error.message);

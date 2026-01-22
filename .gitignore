@@ -69,4 +69,3 @@ lerna-debug.log*
 *.sw?
 
 # CI/CD
-.github/workflows/publish-only.yml
