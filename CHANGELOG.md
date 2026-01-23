@@ -1,3 +1,10 @@
+## [1.7.31](https://github.com/planarcat/js-toolkit/compare/v1.7.30...v1.7.31) (2026-01-23)
+
+
+### Performance Improvements
+
+* 精简缓存策略，聚焦关键优化点 ([41f4bcc](https://github.com/planarcat/js-toolkit/commit/41f4bcc06e1b252df5fb7515b274ea8c3742671f))
+
 ## [1.7.30](https://github.com/planarcat/js-toolkit/compare/v1.7.29...v1.7.30) (2026-01-23)
 
 
