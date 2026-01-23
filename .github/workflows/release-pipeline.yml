@@ -15,8 +15,6 @@ env:
   NODE_VERSION_20: '20.x'
   NODE_VERSION_22: '22.x'
   PNPM_STORE_PATH: ~/.pnpm-store
-  CACHE_PRIMARY_KEY: ${{ github.ref }}
-  CACHE_FALLBACK_KEY: ${{ github.ref_name }}
 
 jobs:
   quality-check:
