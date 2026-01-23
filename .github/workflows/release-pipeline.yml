@@ -11,10 +11,9 @@ permissions:
   contents: read
 
 env:
-  PNPM_VERSION: '10' # 统一 pnpm 版本
+  PNPM_VERSION: '10'
   NODE_VERSION_20: '20.x'
   NODE_VERSION_22: '22.x'
-  PNPM_STORE_PATH: ~/.pnpm-store
 
 jobs:
   quality-check:
@@ -29,83 +28,61 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION_20 }}
-          # 移除 cache: 'pnpm'，避免在 pnpm 未安装时尝试使用
 
       - name: Install pnpm globally
         run: |
-          echo "Installing pnpm v${{ env.PNPM_VERSION }}..."
           npm install -g pnpm@${{ env.PNPM_VERSION }}
           echo "pnpm version: $(pnpm --version)"
-          pnpm config set store-dir ${{ env.PNPM_STORE_PATH }}
 
-      - name: Cache pnpm store
-        uses: actions/cache@v4
-        id: pnpm-store-cache
-        with:
-          path: ${{ env.PNPM_STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
-
+      # 只缓存 node_modules（最有效的缓存）
       - name: Cache node_modules
         uses: actions/cache@v4
         id: node-modules-cache
         with:
           path: node_modules
-          key: ${{ runner.os }}-node-modules-${{ hashFiles('pnpm-lock.yaml') }}
+          key: ${{ runner.os }}-node-${{ hashFiles('pnpm-lock.yaml') }}
           restore-keys: |
-            ${{ runner.os }}-node-modules-
+            ${{ runner.os }}-node-
 
       - name: Install dependencies
         run: |
           if [[ "${{ steps.node-modules-cache.outputs.cache-hit }}" == 'true' ]]; then
-            echo "Using cached node_modules"
-            # 即使有缓存，也检查是否有依赖需要更新
+            echo "✅ 使用缓存的 node_modules"
+            # 快速安装，仅检查锁文件
             pnpm install --frozen-lockfile --prefer-offline
           else
-            echo "Cache not found, installing dependencies..."
+            echo "🔄 安装所有依赖..."
             pnpm install --frozen-lockfile
           fi
 
       - name: Lint code
         run: pnpm run lint
 
-      - name: Run tests
-        run: pnpm run test
-
-      - name: Cache build output
+      # 缓存 Jest 测试结果（显著加速测试）
+      - name: Cache Jest
         uses: actions/cache@v4
-        id: build-cache
+        id: jest-cache
         with:
-          path: dist
-          key: ${{ runner.os }}-build-${{ hashFiles('src/**/*.ts', 'tsconfig*.json') }}
+          path: |
+            ~/.cache/jest
+            coverage/
+          key: ${{ runner.os }}-jest-${{ hashFiles('__tests__/**/*', 'src/**/*.ts', 'jest.config.js') }}
           restore-keys: |
-            ${{ runner.os }}-build-
+            ${{ runner.os }}-jest-
+
+      - name: Run tests
+        run: pnpm test
 
       - name: Build package
-        run: |
-          if [[ "${{ steps.build-cache.outputs.cache-hit }}" == 'true' ]]; then
-            echo "Using cached build output"
-            # 验证缓存的构建产物是否完整
-            if [ -d "dist" ] && [ -n "$(ls -A dist/ 2>/dev/null)" ]; then
-              echo "Cached build output is valid"
-            else
-              echo "Cached build output is invalid, rebuilding..."
-              pnpm run build
-            fi
-          else
-            echo "Building package..."
-            pnpm run build
-          fi
+        run: pnpm run build
 
       - name: Verify build output
         run: |
           if [ ! -d "dist" ] || [ -z "$(ls -A dist/ 2>/dev/null)" ]; then
-            echo "❌ 构建失败或 dist 目录为空"
+            echo "❌ 构建失败"
             exit 1
           fi
-          echo "✅ 构建产物检查通过"
-          echo "构建产物大小: $(du -sh dist | cut -f1)"
+          echo "✅ 构建完成"
 
   deploy-docs:
     needs: quality-check
@@ -125,38 +102,23 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION_20 }}
-          # 移除 cache: 'pnpm'
 
       - name: Install pnpm globally
-        run: |
-          npm install -g pnpm@${{ env.PNPM_VERSION }}
-          pnpm config set store-dir ${{ env.PNPM_STORE_PATH }}
+        run: npm install -g pnpm@${{ env.PNPM_VERSION }}
 
-      - name: Cache pnpm store (docs)
-        uses: actions/cache@v4
-        with:
-          path: ${{ env.PNPM_STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-store-docs-${{ hashFiles('pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-docs-
-
-      - name: Cache node_modules (docs)
+      # 共享 quality-check 的 node_modules 缓存
+      - name: Cache node_modules
         uses: actions/cache@v4
         with:
           path: node_modules
-          key: ${{ runner.os }}-node-modules-docs-${{ hashFiles('pnpm-lock.yaml') }}
+          key: ${{ runner.os }}-node-${{ hashFiles('pnpm-lock.yaml') }}
           restore-keys: |
-            ${{ runner.os }}-node-modules-docs-
+            ${{ runner.os }}-node-
 
-      - name: Install dependencies (docs)
+      - name: Install dependencies
         run: |
-          if [[ -d "node_modules" && -f "pnpm-lock.yaml" ]]; then
-            echo "Using existing node_modules"
-            pnpm install --frozen-lockfile --prefer-offline
-          else
-            echo "Installing dependencies..."
-            pnpm install --frozen-lockfile
-          fi
+          echo "快速安装依赖..."
+          pnpm install --frozen-lockfile --prefer-offline
 
       - name: Build API docs
         run: pnpm run docs
@@ -203,78 +165,39 @@ jobs:
           node-version: ${{ env.NODE_VERSION_22 }}
           registry-url: 'https://registry.npmjs.org/'
           scope: '@planarcat'
-          # 移除 cache: 'pnpm'
 
       - name: Install pnpm globally
-        run: |
-          npm install -g pnpm@${{ env.PNPM_VERSION }}
-          pnpm config set store-dir ${{ env.PNPM_STORE_PATH }}
+        run: npm install -g pnpm@${{ env.PNPM_VERSION }}
 
-      - name: Cache pnpm store (release)
-        uses: actions/cache@v4
-        with:
-          path: ${{ env.PNPM_STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-store-release-${{ hashFiles('pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-release-
-
-      - name: Cache node_modules (release)
+      # 共享缓存
+      - name: Cache node_modules
         uses: actions/cache@v4
         with:
           path: node_modules
-          key: ${{ runner.os }}-node-modules-release-${{ hashFiles('pnpm-lock.yaml') }}
+          key: ${{ runner.os }}-node-${{ hashFiles('pnpm-lock.yaml') }}
           restore-keys: |
-            ${{ runner.os }}-node-modules-release-
+            ${{ runner.os }}-node-
 
-      - name: Install dependencies (release)
+      - name: Install dependencies
         run: |
-          if [[ -d "node_modules" && -f "pnpm-lock.yaml" ]]; then
-            echo "Using existing node_modules"
-            pnpm install --frozen-lockfile --prefer-offline
-          else
-            echo "Installing dependencies..."
-            pnpm install --frozen-lockfile
-          fi
-
-      - name: Cache build output (release)
-        uses: actions/cache@v4
-        id: build-cache-release
-        with:
-          path: dist
-          key: ${{ runner.os }}-build-release-${{ hashFiles('src/**/*.ts', 'tsconfig*.json') }}
-          restore-keys: |
-            ${{ runner.os }}-build-release-
+          echo "快速安装依赖..."
+          pnpm install --frozen-lockfile --prefer-offline
 
       - name: Build package for release
-        run: |
-          if [[ "${{ steps.build-cache-release.outputs.cache-hit }}" == 'true' ]]; then
-            echo "Using cached build output"
-            if [ -d "dist" ] && [ -f "dist/index.js" ]; then
-              echo "Cached build output is valid"
-            else
-              echo "Cached build output is invalid, rebuilding..."
-              pnpm run build
-            fi
-          else
-            echo "Building package for release..."
-            pnpm run build
-          fi
+        run: pnpm run build
 
       - name: Run semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          # 确保 npm 版本支持 provenance
+          # 更新 npm 以支持 provenance
           npm install -g npm@latest
           npm config set provenance true
 
-          echo "Node.js version: $(node -v)"
-          echo "npm version: $(npm -v)"
-          echo "pnpm version: $(pnpm -v)"
-
-          # 显示发布前的包信息
-          echo "Package name: $(node -p "require('./package.json').name")"
-          echo "Package version: $(node -p "require('./package.json').version")"
+          echo "环境信息:"
+          echo "Node: $(node -v)"
+          echo "npm: $(npm -v)"
+          echo "pnpm: $(pnpm -v)"
 
           # 执行 semantic-release
           npx semantic-release --debug
