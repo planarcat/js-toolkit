@@ -131,7 +131,15 @@ jobs:
       - name: Install pnpm
         uses: pnpm/action-setup@v3
         with:
-          version: 10
+          version: '10' # 使用字符串格式
+          run_install: false # 明确不自动运行 pnpm install
+
+      # 新增：验证 pnpm 是否可用
+      - name: Verify pnpm installation
+        run: |
+          echo "PATH: $PATH"
+          which pnpm || echo "pnpm not found in PATH"
+          pnpm --version || echo "Cannot run pnpm"
 
       - name: Install dependencies
         run: pnpm install
