@@ -1,37 +1,25 @@
 name: Release Pipeline
 
 on:
-  # 针对 PR 的质量检查
   pull_request:
     branches: [main, master]
-
-  # 针对推送的完整发布流程
   push:
     branches: [main, master, beta, alpha]
-
-  # 允许手动触发
   workflow_dispatch:
 
-# 根据事件类型动态设置权限
+# 基础权限 - 简化配置，后续在具体 job 中覆盖
 permissions:
-  # 基础权限
-  contents: ${{ github.event_name == 'pull_request' && 'read' || 'write' }}
-  pull-requests: ${{ github.event_name == 'pull_request' && 'write' || 'none' }}
-  # 发布相关权限（仅在 push 时生效）
-  id-token: ${{ github.event_name != 'pull_request' && 'write' || 'none' }}
-  issues: ${{ github.event_name != 'pull_request' && 'write' || 'none' }}
+  contents: read
 
 jobs:
-  # 质量检查 - 在 PR 和 Push 时都运行
   quality-check:
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request' || github.event_name == 'push'
-
+    # 针对 PR 和推送都运行质量检查
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          # PR 时需要获取正确的 ref
+          # 针对 PR 获取正确的 commit
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
 
       - name: Set up Node.js
@@ -65,13 +53,14 @@ jobs:
           fi
           echo "✅ 构建产物检查通过"
 
-  # 文档部署 - 仅在 push 到 main/master 时运行
   deploy-docs:
     needs: quality-check
     if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
     runs-on: ubuntu-latest
 
+    # 文档部署需要特定权限
     permissions:
+      contents: read
       pages: write
       id-token: write
 
@@ -106,7 +95,6 @@ jobs:
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v4
 
-  # 发布到 npm - 仅在 push 到特定分支且质量检查通过后运行
   publish:
     needs: quality-check
     if: |
@@ -118,6 +106,13 @@ jobs:
        contains(github.ref, 'refs/heads/alpha'))
 
     runs-on: ubuntu-latest
+
+    # 发布需要更多权限
+    permissions:
+      id-token: write # 用于 npm Trusted Publishing
+      contents: write # 用于创建 Git tag 和 GitHub Release
+      issues: write # 用于更新 issue 链接
+      pull-requests: write
 
     steps:
       - name: Checkout code for release
