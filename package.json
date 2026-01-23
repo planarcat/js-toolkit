@@ -20,7 +20,7 @@
     "format": "prettier --write \"src/**/*.ts\" \"__tests__/**/*.ts\"",
     "format:check": "prettier --check \"src/**/*.ts\" \"__tests__/**/*.ts\"",
     "prepare": "husky",
-    "prepublishOnly": "pnpm run lint && pnpm test && pnpm run build",
+    "prepublishOnly": "pnpm run lint && pnpm test &&  pnpm run build",
     "clean": "rimraf dist coverage",
     "docs": "typedoc",
     "docs:watch": "typedoc --watch",
