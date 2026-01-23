@@ -1,3 +1,10 @@
+## [1.7.30](https://github.com/planarcat/js-toolkit/compare/v1.7.29...v1.7.30) (2026-01-23)
+
+
+### Bug Fixes
+
+* 移除actions/setup-node中的cache配置，避免pnpm未安装错误 ([fb08f3f](https://github.com/planarcat/js-toolkit/commit/fb08f3f833d5d6a0957b47ce0724380a852130a0))
+
 ## [1.7.29](https://github.com/planarcat/js-toolkit/compare/v1.7.28...v1.7.29) (2026-01-23)
 
 
