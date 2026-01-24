@@ -2,6 +2,9 @@
   "entryPoints": ["src"],
   "out": "docs",
   "readme": "README.md",
+  "headings": {
+    "readme": false
+  },
   "excludePrivate": true,
   "excludeProtected": true,
   "sort": ["kind", "source-order"]

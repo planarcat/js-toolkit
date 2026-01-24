@@ -33,11 +33,11 @@ pnpm add @planarcat/js-toolkit
 ### 基础使用
 
 ```typescript
-import { 
-  formatDate, 
-  debounce, 
-  toFormattedNumber, 
-  toFormattedNumberString 
+import {
+  formatDate,
+  debounce,
+  toFormattedNumber,
+  toFormattedNumberString,
 } from '@planarcat/js-toolkit';
 
 // 日期格式化
@@ -64,18 +64,21 @@ import { formatDate, debounce } from '@planarcat/js-toolkit';
 
 const SearchComponent: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
-  
+
   // 使用防抖优化搜索
-  const handleSearch = useCallback(debounce((term: string) => {
-    console.log('搜索:', term);
-  }, 300), []);
+  const handleSearch = useCallback(
+    debounce((term: string) => {
+      console.log('搜索:', term);
+    }, 300),
+    [],
+  );
 
   return (
     <div>
-      <input 
-        type="text" 
+      <input
+        type="text"
         value={searchTerm}
-        onChange={(e) => {
+        onChange={e => {
           setSearchTerm(e.target.value);
           handleSearch(e.target.value);
         }}
@@ -113,22 +116,22 @@ formatDate(new Date(), 'dd HH:mm', { locale: 'en-US' }); // "Monday 14:30"
 
 #### 支持的格式化标记
 
-| 标记 | 说明 | 示例 |
-|------|------|------|
-| `YYYY` | 4位年份 | 2024 |
-| `YY` | 2位年份 | 24 |
-| `MM` | 月份（01-12） | 01 |
-| `M` | 月份（1-12） | 1 |
-| `DD` | 日期（01-31） | 01 |
-| `D` | 日期（1-31） | 1 |
-| `HH` | 小时（00-23） | 14 |
-| `H` | 小时（0-23） | 14 |
-| `mm` | 分钟（00-59） | 05 |
-| `m` | 分钟（0-59） | 5 |
-| `ss` | 秒（00-59） | 09 |
-| `s` | 秒（0-59） | 9 |
-| `dd` | 周几（中文） | 周一 |
-| `ddd` | 周几（英文缩写） | Mon |
+| 标记   | 说明             | 示例   |
+| ------ | ---------------- | ------ |
+| `YYYY` | 4位年份          | 2024   |
+| `YY`   | 2位年份          | 24     |
+| `MM`   | 月份（01-12）    | 01     |
+| `M`    | 月份（1-12）     | 1      |
+| `DD`   | 日期（01-31）    | 01     |
+| `D`    | 日期（1-31）     | 1      |
+| `HH`   | 小时（00-23）    | 14     |
+| `H`    | 小时（0-23）     | 14     |
+| `mm`   | 分钟（00-59）    | 05     |
+| `m`    | 分钟（0-59）     | 5      |
+| `ss`   | 秒（00-59）      | 09     |
+| `s`    | 秒（0-59）       | 9      |
+| `dd`   | 周几（中文）     | 周一   |
+| `ddd`  | 周几（英文缩写） | Mon    |
 | `dddd` | 周几（英文全称） | Monday |
 
 #### 性能优化模式
@@ -188,7 +191,7 @@ toFormattedNumber(1234.5678, { decimalPlaces: 2 }); // 1234.57
 
 // 保留所有小数位
 toFormattedNumber(1234.5678, {
-  decimalPlaces: DecimalPlacesOptions.RETAIN_ALL
+  decimalPlaces: DecimalPlacesOptions.RETAIN_ALL,
 }); // 1234.5678
 
 // 处理字符串
@@ -230,7 +233,7 @@ toFormattedNumberString(-1234.5678); // "-1,234.5678"
 
 ```typescript
 // 对于频繁调用的场景，使用编译模式
-const fastFormatDate = (date: Date) => 
+const fastFormatDate = (date: Date) =>
   formatDate(date, 'YYYY-MM-DD HH:mm:ss', { mode: 'compile' });
 
 // 在循环中使用
@@ -264,16 +267,16 @@ window.addEventListener('resize', resizeDebounce);
 所有函数都提供完整的 TypeScript 类型定义：
 
 ```typescript
-import { 
-  formatDate, 
-  DateFormatOptions, 
-  DateInput 
+import {
+  formatDate,
+  DateFormatOptions,
+  DateInput,
 } from '@planarcat/js-toolkit';
 
 // 类型安全的参数传递
 const options: DateFormatOptions = {
   mode: 'compile',
-  locale: 'zh-CN'
+  locale: 'zh-CN',
 };
 
 const dateInput: DateInput = new Date();
@@ -284,11 +287,11 @@ formatDate(dateInput, 'YYYY-MM-DD', options);
 
 ### 日期格式化性能对比
 
-| 模式 | 首次调用 | 后续调用 | 适用场景 |
-|------|----------|----------|----------|
+| 模式     | 首次调用     | 后续调用     | 适用场景 |
+| -------- | ------------ | ------------ | -------- |
 | 自动模式 | 普通模式速度 | 编译模式速度 | 通用场景 |
-| 编译模式 | 较慢 | 极快 | 频繁调用 |
-| 普通模式 | 快 | 稳定 | 简单场景 |
+| 编译模式 | 较慢         | 极快         | 频繁调用 |
+| 普通模式 | 快           | 稳定         | 简单场景 |
 
 ### 内存使用优化
 
