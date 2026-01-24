@@ -7,9 +7,9 @@
 // 日期相关工具
 export { default as formatDate } from './date/formatDate';
 export type {
+  DateFormatMode,
   DateFormatOptions,
   DateInput,
-  DateFormatMode,
   WeekdayNames,
 } from './types/date';
 
