@@ -1,14 +1,9 @@
 {
   "entryPoints": ["src"],
   "out": "docs",
-  "plugin": ["typedoc-plugin-markdown"],
-  "readme": "none",
+  "readme": "README.md",
   "name": "@planarcat/js-toolkit",
   "excludePrivate": true,
   "excludeProtected": true,
-  "sort": ["kind", "source-order"],
-  "hideBreadcrumbs": false,
-  "navigationLinks": {
-    "GitHub": "https://github.com/planarcat/js-toolkit"
-  }
+  "sort": ["kind", "source-order"]
 }
