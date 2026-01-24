@@ -2,7 +2,6 @@
   "entryPoints": ["src"],
   "out": "docs",
   "readme": "README.md",
-  "name": "@planarcat/js-toolkit",
   "excludePrivate": true,
   "excludeProtected": true,
   "sort": ["kind", "source-order"]
